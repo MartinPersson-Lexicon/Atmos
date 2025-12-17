@@ -1,7 +1,4 @@
-// Minimal module: fetch a single fixed SMHI period JSON and return the latest sample
-const FIXED_URL =
-  "https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/52350/period/latest-hour/data.json";
-
+// SMHI helper utilities
 async function fetchJson(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Fetch error ${res.status} ${res.statusText}`);
@@ -19,14 +16,7 @@ function pickLatestFromValueArray(periodJson) {
 
   return {
     raw: latest,
-    date: new Date(Number(latest.date)).toLocaleString("sv-SE", {
-      timeZone: "Europe/Stockholm",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit"
-    }),
+    date: new Date(Number(latest.date)).toISOString(),
     value:
       latest.value === null || latest.value === undefined
         ? null
@@ -35,9 +25,34 @@ function pickLatestFromValueArray(periodJson) {
   };
 }
 
-export async function getLatestFromFixedEndpoint() {
-  const json = await fetchJson(FIXED_URL);
+async function fetchLatestParam(stationId, parameterId, periodKey = "latest-hour") {
+  const url = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/${parameterId}/station/${stationId}/period/${periodKey}/data.json`;
+  const json = await fetchJson(url);
   return pickLatestFromValueArray(json);
 }
 
-export default { getLatestFromFixedEndpoint };
+/**
+ * Populate a WeatherModel-shaped object by station id.
+ * Fetches temperature (param 1), windDirection (3) and windSpeed (4) by default.
+ */
+export async function populateWeatherModelFromStationId(stationId, opts = {}) {
+  const params = opts.params || { temperature: 1, windDirection: 3, windSpeed: 4 };
+  const period = opts.period || "latest-hour";
+
+  const [temp, windDir, windSpeed] = await Promise.all([
+    fetchLatestParam(stationId, params.temperature, period).catch(() => null),
+    fetchLatestParam(stationId, params.windDirection, period).catch(() => null),
+    fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
+  ]);
+
+  return {
+    dateTime: temp?.date ?? windDir?.date ?? windSpeed?.date ?? null,
+    temperature: temp?.value ?? null,
+    quality: temp?.quality ?? null,
+    windDirection: windDir?.value ?? null,
+    windSpeed: windSpeed?.value ?? null,
+    raw: { temp: temp?.raw ?? null, windDir: windDir?.raw ?? null, windSpeed: windSpeed?.raw ?? null },
+  };
+}
+
+export default { fetchLatestParam, populateWeatherModelFromStationId };
