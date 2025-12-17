@@ -41,8 +41,13 @@ export default function WeatherWidget({ lat, lon, parameter = "1" }) {
       {latest ? (
         <div className="latest-sample">
           <p>
-            Latest: {latest.value !== null ? latest.value : "—"}{" "}
-            {latest.date ? `at ${latest.date}` : ""}
+            Temp: {latest.value !== null ? latest.value : "-"}{" "}
+          </p>
+          <p>
+            Date: {latest.date ? `at ${latest.date}` : "--"}
+          </p>
+          <p>
+            Quality: {latest.quality ? ` ${latest.quality}` : "--"}
           </p>
         </div>
       ) : (

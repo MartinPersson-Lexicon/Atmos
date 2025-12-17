@@ -1,6 +1,6 @@
 // Minimal module: fetch a single fixed SMHI period JSON and return the latest sample
 const FIXED_URL =
-  "https://opendata-download-metobs.smhi.se/api/version/latest/parameter/3/station/188790/period/latest-hour/data.json";
+  "https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/52350/period/latest-hour/data.json";
 
 async function fetchJson(url) {
   const res = await fetch(url);
@@ -19,7 +19,14 @@ function pickLatestFromValueArray(periodJson) {
 
   return {
     raw: latest,
-    date: new Date(Number(latest.date)).toISOString(),
+    date: new Date(Number(latest.date)).toLocaleString("sv-SE", {
+      timeZone: "Europe/Stockholm",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    }),
     value:
       latest.value === null || latest.value === undefined
         ? null
