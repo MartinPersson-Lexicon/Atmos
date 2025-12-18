@@ -13,6 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Use border-box globally to avoid overflow caused by padding */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
