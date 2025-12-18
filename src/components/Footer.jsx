@@ -1,6 +1,6 @@
 import '../App.css'
 
-export default function Footer() {
+export default function FooterWidget() {
   return (
     <footer className="app-footer">
       <p>© {new Date().getFullYear()} Atmos</p>

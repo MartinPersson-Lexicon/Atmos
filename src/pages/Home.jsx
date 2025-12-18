@@ -1,6 +1,10 @@
 import Card4OtherCities from "../components/Card4OtherCities/Card4OtherCities";
 
 export default function Home() {
+  // const [theme, setTheme] = useState("dark");
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [activeNav, setActiveNav] = useState("dashboard");
+
   return (
     <div className="homePage">
       <div className="homeLeft">
