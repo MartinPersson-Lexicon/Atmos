@@ -2,7 +2,7 @@ import "../App.css";
 
 
 import { useState } from "react";
-import Sidebar from "../components/Sidebar/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import CordOneHeader from "../components/card-one-header/CardOneHeader";
 import WeatherCard from "../components/weather-card/WeatherCard";
 import CardTwoWidget from "../components/CardTwoWidget";
