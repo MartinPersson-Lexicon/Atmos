@@ -2,17 +2,12 @@ import "../App.css";
 
 
 import { useState } from "react";
-import Sidebar from "../components/sidebar/Sidebar";
-import CordOneHeader from "../components/card-one-header/CardOneHeader";
-import WeatherCard from "../components/weather-card/WeatherCard";
-import CardTwoWidget from "../components/CardTwoWidget";
+import CardOneWidget from "../components/card-one/CardOneWidget";
+import CardTwoWidget from "../components/card-two/CardTwoWidget";
 import WeatherModel from "../models/WeatherModel";
-import { SMHI_PARAMETERS_MAP } from "../models/SMHIParameters";
-
+import Card4OtherCities from "../components/Card4OtherCities/Card4OtherCities";
 export default function Home() {
-  const [theme, setTheme] = useState("dark");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeNav, setActiveNav] = useState("dashboard");
+  const [theme] = useState("dark");
 
   // Example: Map WeatherModel and SMHI_PARAMETERS_MAP to CardTwo props
 
@@ -28,25 +23,22 @@ export default function Home() {
   const visibilityTime = '09:00'; // 24h format
   const sunrise = '04:50'; // 24h format
   const sunset = '18:45'; // 24h format
+  // const [theme, setTheme] = useState("dark");
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [activeNav, setActiveNav] = useState("dashboard");
 
   return (
     <div className={`app-container ${theme}`}>
-      <Sidebar activeNav={activeNav} setActiveNav={setActiveNav} />
-
       <main className="main-content">
-        <CordOneHeader
-          theme={theme}
-          setTheme={setTheme}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-
-        <div className="content-grid">
-          <div className="left-column">
-            <WeatherCard />
+        <div className="homePage">
+          <div className="homeLeft">
+            <h1 className="homeTitle">Home page</h1>
+            <CardOneWidget />
+            <div className="leftBottom">
+              <Card4OtherCities />
+            </div>
           </div>
-
-          <div className="right-column">
+          <div className="homeRight">
             <CardTwoWidget
               wind={{ value: windValue, unit: windUnit, time: visibilityTime }}
               humidity={{ value: humidityValue, desc: 'Humidity is good' }}

@@ -1,0 +1,126 @@
+/* ===== CARD 4 (TYPOGRAPHY MATCH) ===== */
+
+.card4 {
+  background: #1b1d1f;
+  border-radius: 22px;
+  padding: 22px;
+  color: #ffffff;
+  width: 100%;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+
+  /* Font style like the design */
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Header */
+.card4__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.card4__title {
+  margin: 0;
+  font-size: 22px;        /* matches design */
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.card4__seeAll {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Scroll area */
+.card4__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Scrollbar */
+.card4__list::-webkit-scrollbar {
+  width: 8px;
+}
+.card4__list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+/* ===== CITY ROW ===== */
+
+.cityRow {
+  background: #2a2c2e;
+  border-radius: 20px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 1fr 90px 120px;
+  align-items: center;
+}
+
+/* Country */
+.cityRow__region {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 6px;
+}
+
+/* City name */
+.cityRow__city {
+  font-size: 26px;        /* exact visual match */
+  font-weight: 600;
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+/* Weather description */
+.cityRow__desc {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Icon */
+.cityRow__mid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cityRow__icon {
+  font-size: 42px;
+}
+
+/* Temperature */
+.cityRow__right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.cityRow__slash {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.cityRow__lo {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}

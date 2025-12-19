@@ -35,7 +35,7 @@ export default function WeatherWidget({ stationId = 52350, lat, lon, parameter =
 
   return (
     <div className="widget weather-widget">
-      <h3>Weather — Station 188790</h3>
+      <h3>This content and below is from ApiTestWidget</h3>
 
 
       {model ? (
