@@ -1,0 +1,58 @@
+.card-two {
+  background: #18181c;
+  border-radius: 20px;
+  padding: 2rem;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.card-two__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.card-two__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.card-two__item {
+  background: #23232b;
+  border-radius: 16px;
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.card-two__label {
+  font-size: 1rem;
+  color: #b0b0b8;
+  margin-bottom: 0.5rem;
+}
+
+.card-two__value {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.card-two__unit {
+  font-size: 1rem;
+  color: #b0b0b8;
+  margin-left: 0.2rem;
+}
+
+.card-two__desc {
+  font-size: 0.9rem;
+  color: #7c7c85;
+}
+
+.card-two__icon-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
