@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Sidebar from './components/sidebar/Sidebar'
+// import Sidebar from './components/sidebar/Sidebar'
 import Header from './components/Header/Header'
 import WeatherCard from './components/WeatherCard/WeatherCard'
 import './App.css'
@@ -7,11 +7,11 @@ import './App.css'
 function App() {
   const [theme, setTheme] = useState('dark')
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeNav, setActiveNav] = useState('dashboard')
+  // const [activeNav, setActiveNav] = useState('dashboard')
 
   return (
     <div className={`app-container ${theme}`}>
-      <Sidebar activeNav={activeNav} setActiveNav={setActiveNav} />
+      {/* <Sidebar activeNav={activeNav} setActiveNav={setActiveNav} /> */}
       
       <main className="main-content">
         <Header 
