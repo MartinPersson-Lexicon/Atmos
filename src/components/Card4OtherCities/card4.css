@@ -1,14 +1,13 @@
 /* ===== CARD 4 (TYPOGRAPHY MATCH) ===== */
 
 .card4 {
-  background: #1b1d1f;
-  border-radius: 22px;
-  padding: 22px;
-  color: #ffffff;
+  background: #18181c;
+  border-radius: 20px;
+  padding: 2rem;
+  color: #fff;
+  margin-bottom: 2rem;
   width: 100%;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-
-  /* Font style like the design */
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 

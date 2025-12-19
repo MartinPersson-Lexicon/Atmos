@@ -1,8 +1,9 @@
 .weather-card {
-  background-color: #1e1e1e;
+  background: #18181c;
   border-radius: 20px;
-  padding: 25px;
-  border: 1px solid #3a3a5a;
+  padding: 2rem;
+  color: #fff;
+  margin-bottom: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
