@@ -20,7 +20,7 @@ export default function Home() {
   const windValue = (WeatherModel.Vindhastighet * 3.6).toFixed(1);
   const windUnit = 'km/h';
   const humidityValue = WeatherModel.RelativLuftfuktighet;
-  const humidityUnit = '%';
+  // const humidityUnit = '%';
   // UV index and visibility are not in your model, so use placeholders or extend your model as needed
   const uvIndexValue = 4; // Placeholder
   const uvIndexDesc = 'Moderate UV'; // Placeholder
