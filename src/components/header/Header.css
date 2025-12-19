@@ -1,3 +1,5 @@
+
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -7,10 +9,6 @@
   padding: 0 20px;
   /* background-color: #15161a; */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-}
-
-/* Ensure header spans full width and items stay in a row */
-.header {
   width: 100%;
   gap: 20px;
 }
@@ -22,29 +20,16 @@
   margin: 0;
 }
 
+
+
 .header-right {
   display: flex;
   align-items: center;
   gap: 20px;
-}
-
-/* Make the right side take available space and keep children aligned to the right */
-.header-right {
   flex: 1 1 auto;
   justify-content: flex-end;
 }
 
-/* Responsive: stack header elements on very small screens */
-@media (max-width: 520px) {
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  .header-right {
-    justify-content: space-between;
-  }
-}
 
 .search-bar {
   display: flex;
@@ -55,10 +40,12 @@
   width: 280px;
 }
 
+
 .search-icon {
   margin-right: 10px;
   opacity: 0.6;
 }
+
 
 .search-bar input {
   background: none;
@@ -67,17 +54,22 @@
   font-size: 18px;
   width: 100%;
   outline: none;
+  flex: 1 1 auto;
+  justify-content: flex-end;
 }
+
 
 .search-bar input::placeholder {
   color: #6b6b8d;
 }
+
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 
 .icon-btn {
   width: 60px;
@@ -96,7 +88,20 @@
   transition: background-color 0.15s ease, transform 0.08s ease;
 }
 
+
 .icon-btn:hover {
   background-color: #2e2e3a;
   transform: translateY(-1px);
+}
+
+/* Responsive: stack header elements on very small screens */
+@media (max-width: 520px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .header-right {
+    justify-content: space-between;
+  }
 }
