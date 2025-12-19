@@ -3,6 +3,16 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  height: 70px;
+  padding: 0 20px;
+  /* background-color: #15161a; */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Ensure header spans full width and items stay in a row */
+.header {
+  width: 100%;
+  gap: 20px;
 }
 
 .date {
@@ -16,6 +26,24 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+/* Make the right side take available space and keep children aligned to the right */
+.header-right {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+/* Responsive: stack header elements on very small screens */
+@media (max-width: 520px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .header-right {
+    justify-content: space-between;
+  }
 }
 
 .search-bar {
@@ -52,20 +80,23 @@
 }
 
 .icon-btn {
-  width: 40px;
+  width: 60px;
   height: 40px;
-  border-radius: 50%;
+  padding: 0;
+  border-radius: 8px;
   background-color: #1e1e1e;
   border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   color: #fff;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.15s ease, transform 0.08s ease;
 }
 
 .icon-btn:hover {
-  background-color: #3a3a5a;
+  background-color: #2e2e3a;
+  transform: translateY(-1px);
 }

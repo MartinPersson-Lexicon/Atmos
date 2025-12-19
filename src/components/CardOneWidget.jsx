@@ -1,6 +1,6 @@
-import './WeatherCard.css'
+import React from "react";
 
-function WeatherCard() {
+function CardOneWidget () {
   const weatherData = {
     location: 'Malmö, Sweden',
     day: 'Sunday',
@@ -37,6 +37,6 @@ function WeatherCard() {
       </div>
     </div>
   )
-}
+};
 
-export default WeatherCard
+export default CardOneWidget;

@@ -6,8 +6,11 @@
   align-items: center;
   padding: 20px 0;
   border-right: 1px solid #2a2a4a;
+  align-self: flex-start;
+  position: sticky;
+  top: 70px; /* sit below the fixed header */
+  z-index: 1; /* below header */
 }
-
 
 .menu-btn {
   background: none;
@@ -53,3 +56,6 @@
 .help-icon {
   margin-top: auto;
 }
+
+/* Hide textual nav links by default to keep a compact sidebar */
+/* text links removed — sidebar is icon-only */
