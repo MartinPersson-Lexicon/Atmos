@@ -2,19 +2,12 @@ import "../App.css";
 
 
 import { useState } from "react";
-import Sidebar from "../components/sidebar-folder/Sidebar";
 import CardOneWidget from "../components/card-one/CardOneWidget";
-// import WeatherCard from "../components/weather-card/WeatherCard";
-import CardTwoWidget from "../components/CardTwoWidget";
+import CardTwoWidget from "../components/card-two/CardTwoWidget";
 import WeatherModel from "../models/WeatherModel";
-import { SMHI_PARAMETERS_MAP } from "../models/SMHIParameters";
-
 import Card4OtherCities from "../components/Card4OtherCities/Card4OtherCities";
-// import CardOneWidget from "../components/card-one/CardOneWidget";
 export default function Home() {
-  const [theme, setTheme] = useState("dark");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeNav, setActiveNav] = useState("dashboard");
+  const [theme] = useState("dark");
 
   // Example: Map WeatherModel and SMHI_PARAMETERS_MAP to CardTwo props
 
@@ -36,22 +29,16 @@ export default function Home() {
 
   return (
     <div className={`app-container ${theme}`}>
-      <Sidebar activeNav={activeNav} setActiveNav={setActiveNav} />
-
       <main className="main-content">
-        <CardOneWidget
-          theme={theme}
-          setTheme={setTheme}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-
-        <div className="content-grid">
-          <div className="left-column">
-            <WeatherCard />
+        <div className="homePage">
+          <div className="homeLeft">
+            <h1 className="homeTitle">Home page</h1>
+            <CardOneWidget />
+            <div className="leftBottom">
+              <Card4OtherCities />
+            </div>
           </div>
-
-          <div className="right-column">
+          <div className="homeRight">
             <CardTwoWidget
               wind={{ value: windValue, unit: windUnit, time: visibilityTime }}
               humidity={{ value: humidityValue, desc: 'Humidity is good' }}
@@ -61,26 +48,6 @@ export default function Home() {
               sunset={sunset}
             />
           </div>
-    <div className="homePage">
-      <div className="homeLeft">
-        <h1 className="homeTitle">Home page</h1>
-
-        <div className="left-column">
-          <CardOneWidget />
-        </div>
-        <div className="right-column"></div>
-
-        {/* Card4 should be in the left-bottom area */}
-        <div className="leftBottom">
-          <Card4OtherCities />
-        </div>
-      </div>
-
-      <div className="homeRight">
-        {/* Right side is empty for now (other cards will go here later) */}
-      </div>
-    </div>
-
         </div>
       </main>
     </div>
