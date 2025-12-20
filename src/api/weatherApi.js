@@ -30,6 +30,11 @@ async function fetchLatestParam(
   parameterId,
   periodKey = "latest-hour"
 ) {
+async function fetchLatestParam(
+  stationId,
+  parameterId,
+  periodKey = "latest-hour"
+) {
   const url = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/${parameterId}/station/${stationId}/period/${periodKey}/data.json`;
   const json = await fetchJson(url);
   return pickLatestFromValueArray(json);
@@ -47,12 +52,21 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     rainIntensity: 38,
     relativeHumidity: 6,
   };
+  const params = opts.params || {
+    temperature: 1,
+    windDirection: 3,
+    windSpeed: 4,
+    rainIntensity: 38,
+    relativeHumidity: 6,
+  };
   const period = opts.period || "latest-hour";
 
   const [temp, windDirection, windSpeed, rainIntensity, relativeHumidity] = await Promise.all([
     fetchLatestParam(stationId, params.temperature, period).catch(() => null),
     fetchLatestParam(stationId, params.windDirection, period).catch(() => null),
     fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
+    fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
+    fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
     fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
     fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
   ]);
