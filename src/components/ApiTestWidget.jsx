@@ -137,9 +137,11 @@ export default function ApiTestWidget({
         <div className="latest-sample">
           <p>Updated at: {formatDate(model.dateTime)}</p>
           <p>Temp: {model.temperature !== null ? model.temperature : "-"}</p>
-          <p>Quality: {model.quality ?? "--"}</p>
           <p>Wind dir: {model.windDirection ?? "--"}</p>
           <p>Wind speed: {model.windSpeed ?? "--"}</p>
+          <p>Rain intensity: {model.rainIntensity ?? "--"}</p>
+          <p>Relative humidity: {model.relativeHumidity ?? "--"}</p>
+          <p>Quality of temperature measurement: {model.quality ?? "--"}</p>
         </div>
       ) : (
         <p>No latest sample available</p>
