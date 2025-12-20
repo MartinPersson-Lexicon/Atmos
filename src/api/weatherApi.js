@@ -3,7 +3,9 @@
 import { SMHI_STATION_IDS } from "../models/cityModel.js";
 
 
-const allStationIds = [SMHI_STATION_IDS];
+const allStationIds = Array.isArray(SMHI_STATION_IDS)
+  ? SMHI_STATION_IDS
+  : [];
 
 async function fetchJson(url) {
   const res = await fetch(url);
@@ -81,20 +83,20 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
   };
 }
 
- export async function fetchWeaterForAllStrationIds( opts = {}) {
-    const results = {};
-    await Promise.all(
-      allStationIds.map(async (stationId) => {
-        try {
-          const data = await populateWeatherModelFromStationId(stationId, opts);
-          results[stationId] = { data, error: null };
-        } catch (error) {
-          results[stationId] = { data: null, error: error.message || String(error) };
-        }
-      })
-    );
-    return results;
-  } 
+export async function fetchWeaterForAllStrationIds(opts = {}) {
+  const results = {};
+  await Promise.all(
+    allStationIds.map(async (stationId) => {
+      try {
+        const data = await populateWeatherModelFromStationId(stationId, opts);
+        results[stationId] = { data, error: null };
+      } catch (error) {
+        results[stationId] = { data: null, error: error.message || String(error) };
+      }
+    })
+  );
+  return results;
+}
 
 
 export default { fetchLatestParam, populateWeatherModelFromStationId, fetchWeaterForAllStrationIds };
