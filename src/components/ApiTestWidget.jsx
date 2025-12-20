@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "../App.css";
-import weatherApi from "../api/weather";
+import weatherApi from "../api/weatherApi";
 
 export default function ApiTestWidget({
   stationId = 52350,
@@ -96,7 +96,7 @@ export default function ApiTestWidget({
           className="status-alert"
           style={{
             position: "absolute",
-            top:86,
+            top: 86,
             left: "50%",
             transform: "translateX(-50%)",
             right: "auto",
@@ -136,7 +136,9 @@ export default function ApiTestWidget({
       {model ? (
         <div className="latest-sample">
           <h3>Updated at: {formatDate(model.dateTime)}</h3>
-          <h3>Temp: {model.temperature !== null ? model.temperature : "-"} °</h3>
+          <h3>
+            Temp: {model.temperature !== null ? model.temperature : "-"} °
+          </h3>
           <h3>Wind direction: {model.windDirection ?? "--"} dgr</h3>
           <h3>Wind speed: {model.windSpeed ?? "--"} m/s</h3>
           <h3>Rain intensity: {model.rainIntensity ?? "--"} mm/h</h3>
