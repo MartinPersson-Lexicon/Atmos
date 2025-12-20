@@ -55,8 +55,6 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
     fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
     fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
-    fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
-    fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
   ]);
 
   return {
