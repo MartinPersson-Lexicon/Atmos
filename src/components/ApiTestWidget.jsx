@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "../App.css";
 import weatherApi from "../api/weather";
 
-export default function WeatherWidget({
+export default function ApiTestWidget({
   stationId = 52350,
   lat,
   lon,
@@ -30,9 +30,9 @@ export default function WeatherWidget({
       const newTs = model?.dateTime ? Date.parse(model.dateTime) : null;
       if (newTs && prevTs && newTs > prevTs) {
         setStatusMessage("Updated with newer weather data!");
-        setTimeout(() => setStatusMessage(null), 3000);
+        setTimeout(() => setStatusMessage(null), 4000);
       } else if (newTs && prevTs && newTs === prevTs) {
-        setStatusMessage("Already displaying the latest weather data!");
+        setStatusMessage("Displaying the latest weather data!");
         setTimeout(() => setStatusMessage(null), 3000);
       }
       setResult(model);
@@ -69,21 +69,65 @@ export default function WeatherWidget({
   }
 
   return (
-    <div className="widget weather-widget">
+    <div className="widget weather-widget" style={{ position: "relative" }}>
       <h3>This content and below is from ApiTestWidget</h3>
 
       <div style={{ marginBottom: 12 }}>
-        <button onClick={load} disabled={loading}>
+        <button
+          onClick={load}
+          disabled={loading}
+          style={{
+            border: "1px solid #3a3",
+            color: "#e6ffe6",
+            background: "transparent",
+            padding: "6px 10px",
+            borderRadius: 6,
+            cursor: loading ? "not-allowed" : "pointer",
+            opacity: loading ? 0.6 : 1,
+          }}
+        >
           {loading ? "Fetching…" : "Fetch weather data"}
         </button>
       </div>
 
       {statusMessage && (
         <div
-          className="updated-badge"
-          style={{ color: "#7fff7f", marginBottom: 8 }}
+          role="alert"
+          className="status-alert"
+          style={{
+            position: "absolute",
+            top:86,
+            left: "50%",
+            transform: "translateX(-50%)",
+            right: "auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
+            padding: "8px 12px",
+            background: "#212121",
+            color: "#e6ffe6",
+            border: "1px solid #3a3",
+            borderRadius: 8,
+            zIndex: 2000,
+          }}
         >
-          {statusMessage}
+          <span style={{ flex: "1 1 auto" }}>{statusMessage}</span>
+          <button
+            onClick={() => setStatusMessage(null)}
+            style={{
+              marginLeft: 8,
+              padding: "6px 10px",
+              borderRadius: 6,
+              border: "none",
+              background: "#3a3",
+              color: "#042",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            Ok
+          </button>
         </div>
       )}
 
@@ -91,8 +135,8 @@ export default function WeatherWidget({
 
       {model ? (
         <div className="latest-sample">
-          <p>Temp: {model.temperature !== null ? model.temperature : "-"}</p>
           <p>Updated at: {formatDate(model.dateTime)}</p>
+          <p>Temp: {model.temperature !== null ? model.temperature : "-"}</p>
           <p>Quality: {model.quality ?? "--"}</p>
           <p>Wind dir: {model.windDirection ?? "--"}</p>
           <p>Wind speed: {model.windSpeed ?? "--"}</p>
