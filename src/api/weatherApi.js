@@ -49,25 +49,27 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
   };
   const period = opts.period || "latest-hour";
 
-  const [temp, windDir, windSpeed, rainIntensity, relativeHumidity] = await Promise.all([
+  const [temp, windDirection, windSpeed, rainIntensity, relativeHumidity] = await Promise.all([
     fetchLatestParam(stationId, params.temperature, period).catch(() => null),
     fetchLatestParam(stationId, params.windDirection, period).catch(() => null),
     fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
     fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
     fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
+    fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
+    fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
   ]);
 
   return {
-    dateTime: temp?.date ?? windDir?.date ?? windSpeed?.date ?? null,
+    dateTime: temp?.date ?? windDirection?.date ?? windSpeed?.date ?? null,
     temperature: temp?.value ?? null,
-    windDirection: windDir?.value ?? null,
+    windDirection: windDirection?.value ?? null,
     windSpeed: windSpeed?.value ?? null,
     rainIntensity: rainIntensity?.value ?? null,
     relativeHumidity: relativeHumidity?.value ?? null,
     quality: temp?.quality ?? null,
     raw: {
       temp: temp?.raw ?? null,
-      windDir: windDir?.raw ?? null,
+      windDirection: windDirection?.raw ?? null,
       windSpeed: windSpeed?.raw ?? null,
       rainIntensity: rainIntensity?.raw ?? null,
       relativeHumidity: relativeHumidity?.raw ?? null,
