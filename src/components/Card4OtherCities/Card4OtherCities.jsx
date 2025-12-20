@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CityRowCard from "./CityRowCard";
 import "./card4.css";
-import weatherApi from "../../api/weather"; // change path only if your project structure is different
+import weatherApi from "../../api/weatherApi"; // change path only if your project structure is different
 
 const baseCities = [
   {
