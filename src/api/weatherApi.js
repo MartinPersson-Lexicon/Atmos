@@ -30,11 +30,6 @@ async function fetchLatestParam(
   parameterId,
   periodKey = "latest-hour"
 ) {
-async function fetchLatestParam(
-  stationId,
-  parameterId,
-  periodKey = "latest-hour"
-) {
   const url = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/${parameterId}/station/${stationId}/period/${periodKey}/data.json`;
   const json = await fetchJson(url);
   return pickLatestFromValueArray(json);
@@ -45,13 +40,6 @@ async function fetchLatestParam(
  * Fetches temperature (param 1), windDirection (3) and windSpeed (4) by default.
  */
 export async function populateWeatherModelFromStationId(stationId, opts = {}) {
-  const params = opts.params || {
-    temperature: 1,
-    windDirection: 3,
-    windSpeed: 4,
-    rainIntensity: 38,
-    relativeHumidity: 6,
-  };
   const params = opts.params || {
     temperature: 1,
     windDirection: 3,
