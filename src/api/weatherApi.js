@@ -1,4 +1,6 @@
 // SMHI helper utilities
+
+
 async function fetchJson(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Fetch error ${res.status} ${res.statusText}`);
@@ -55,8 +57,8 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
     fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
     fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
-  ]);
 
+  ]);
   return {
     dateTime: temp?.date ?? windDirection?.date ?? windSpeed?.date ?? null,
     temperature: temp?.value ?? null,
@@ -75,4 +77,20 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
   };
 }
 
-export default { fetchLatestParam, populateWeatherModelFromStationId };
+ export async function fetchWeaterForAllStrationIds(stationIds, opts = {}) {
+    const results = {};
+    await Promise.all(
+      stationIds.map(async (stationId) => {
+        try {
+          const data = await populateWeatherModelFromStationId(stationId, opts);
+          results[stationId] = { data, error: null };
+        } catch (error) {
+          results[stationId] = { data: null, error: error.message || String(error) };
+        }
+      })
+    );
+    return results;
+  } 
+
+
+export default { fetchLatestParam, populateWeatherModelFromStationId, fetchWeaterForAllStrationIds };
