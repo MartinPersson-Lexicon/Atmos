@@ -53,3 +53,7 @@ export const SMHI_CITY_MODELS = SMHI_CITIES.map((c) => ({
   lat: c.lat ?? null,
   lon: c.lon ?? null,
 }));
+
+export const SMHI_STATION_IDS = Object.fromEntries(
+  SMHI_CITY_MODELS.map((c) => [c.stationId])
+);
