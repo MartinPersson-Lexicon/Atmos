@@ -25,7 +25,11 @@ function pickLatestFromValueArray(periodJson) {
   };
 }
 
-async function fetchLatestParam(stationId, parameterId, periodKey = "latest-hour") {
+async function fetchLatestParam(
+  stationId,
+  parameterId,
+  periodKey = "latest-hour"
+) {
   const url = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/${parameterId}/station/${stationId}/period/${periodKey}/data.json`;
   const json = await fetchJson(url);
   return pickLatestFromValueArray(json);
@@ -36,22 +40,38 @@ async function fetchLatestParam(stationId, parameterId, periodKey = "latest-hour
  * Fetches temperature (param 1), windDirection (3) and windSpeed (4) by default.
  */
 export async function populateWeatherModelFromStationId(stationId, opts = {}) {
-  const params = opts.params || { temperature: 1, windDirection: 3, windSpeed: 4 };
+  const params = opts.params || {
+    temperature: 1,
+    windDirection: 3,
+    windSpeed: 4,
+    rainIntensity: 38,
+    relativeHumidity: 6,
+  };
   const period = opts.period || "latest-hour";
 
-  const [temp, windDir, windSpeed] = await Promise.all([
+  const [temp, windDir, windSpeed, rainIntensity, relativeHumidity] = await Promise.all([
     fetchLatestParam(stationId, params.temperature, period).catch(() => null),
     fetchLatestParam(stationId, params.windDirection, period).catch(() => null),
     fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
+    fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
+    fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
   ]);
 
   return {
     dateTime: temp?.date ?? windDir?.date ?? windSpeed?.date ?? null,
     temperature: temp?.value ?? null,
-    quality: temp?.quality ?? null,
     windDirection: windDir?.value ?? null,
     windSpeed: windSpeed?.value ?? null,
-    raw: { temp: temp?.raw ?? null, windDir: windDir?.raw ?? null, windSpeed: windSpeed?.raw ?? null },
+    rainIntensity: rainIntensity?.value ?? null,
+    relativeHumidity: relativeHumidity?.value ?? null,
+    quality: temp?.quality ?? null,
+    raw: {
+      temp: temp?.raw ?? null,
+      windDir: windDir?.raw ?? null,
+      windSpeed: windSpeed?.raw ?? null,
+      rainIntensity: rainIntensity?.raw ?? null,
+      relativeHumidity: relativeHumidity?.raw ?? null,
+    },
   };
 }
 
