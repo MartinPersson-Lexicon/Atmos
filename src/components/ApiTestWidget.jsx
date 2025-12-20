@@ -29,10 +29,10 @@ export default function ApiTestWidget({
       const prevTs = prevIso ? Date.parse(prevIso) : null;
       const newTs = model?.dateTime ? Date.parse(model.dateTime) : null;
       if (newTs && prevTs && newTs > prevTs) {
-        setStatusMessage("Updated with newer weather data!");
+        setStatusMessage("Updated!");
         setTimeout(() => setStatusMessage(null), 4000);
       } else if (newTs && prevTs && newTs === prevTs) {
-        setStatusMessage("Displaying the latest weather data!");
+        setStatusMessage("Nothing new!");
         setTimeout(() => setStatusMessage(null), 3000);
       }
       setResult(model);
@@ -136,11 +136,11 @@ export default function ApiTestWidget({
       {model ? (
         <div className="latest-sample">
           <p>Updated at: {formatDate(model.dateTime)}</p>
-          <p>Temp: {model.temperature !== null ? model.temperature : "-"}</p>
-          <p>Wind dir: {model.windDirection ?? "--"}</p>
-          <p>Wind speed: {model.windSpeed ?? "--"}</p>
-          <p>Rain intensity: {model.rainIntensity ?? "--"}</p>
-          <p>Relative humidity: {model.relativeHumidity ?? "--"}</p>
+          <p>Temp: ${model.temperature !== null ? model.temperature : "-"} °C</p>
+          <p>Wind dir: {model.windDirection ?? "--"} degrees</p>
+          <p>Wind speed: {model.windSpeed ?? "--"} m/s</p>
+          <p>Rain intensity: {model.rainIntensity ?? "--"} mm/h</p>
+          <p>Relative humidity: {model.relativeHumidity ?? "--"} %</p>
           <p>Quality of temperature measurement: {model.quality ?? "--"}</p>
         </div>
       ) : (
