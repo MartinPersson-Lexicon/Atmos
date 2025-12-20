@@ -1,5 +1,9 @@
 // SMHI helper utilities
 
+import { SMHI_STATION_IDS } from "../models/cityModel.js";
+
+
+const allStationIds = [SMHI_STATION_IDS];
 
 async function fetchJson(url) {
   const res = await fetch(url);
@@ -77,10 +81,10 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
   };
 }
 
- export async function fetchWeaterForAllStrationIds(stationIds, opts = {}) {
+ export async function fetchWeaterForAllStrationIds( opts = {}) {
     const results = {};
     await Promise.all(
-      stationIds.map(async (stationId) => {
+      allStationIds.map(async (stationId) => {
         try {
           const data = await populateWeatherModelFromStationId(stationId, opts);
           results[stationId] = { data, error: null };
