@@ -54,6 +54,10 @@ export const SMHI_CITY_MODELS = SMHI_CITIES.map((c) => ({
   lon: c.lon ?? null,
 }));
 
-export const SMHI_STATION_IDS = Object.fromEntries(
-  SMHI_CITY_MODELS.map((c) => [c.stationId])
-);
+// Array of station id numbers for simple iteration
+export const SMHI_STATION_IDS = SMHI_CITY_MODELS.map((c) => c.stationId);
+
+export function getCityNameByStationId(stationId) {
+  const city = SMHI_CITY_MODELS.find((c) => c.stationId === stationId);
+  return city ? city.city : null;
+}

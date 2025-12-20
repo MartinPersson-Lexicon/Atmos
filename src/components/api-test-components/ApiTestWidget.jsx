@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import "../App.css";
-import weatherApi from "../api/weatherApi";
+import "../../App.css";
+import weatherApi from "../../api/weatherApi";
+import { formatDate } from "../../utils/ApiUtils";
 
 export default function ApiTestWidget({
   stationId = 52350,
@@ -46,10 +47,6 @@ export default function ApiTestWidget({
 
   useEffect(() => {
     mountedRef.current = true;
-  }, [stationId]);
-
-  useEffect(() => {
-    mountedRef.current = true;
     load();
     return () => {
       mountedRef.current = false;
@@ -58,22 +55,9 @@ export default function ApiTestWidget({
 
   const model = result || null;
 
-  function formatDate(iso) {
-    if (!iso) return "--";
-    try {
-      const d = new Date(iso);
-      return d.toLocaleString(undefined, {
-        dateStyle: "medium",
-        timeStyle: "short",
-      });
-    } catch (e) {
-      return `${e}: no change in date formatting ${iso}`;
-    }
-  }
-
   return (
     <div className="widget weather-widget" style={{ position: "relative" }}>
-      <h3>This content and below is from ApiTestWidget</h3>
+      <h2>API Test Widget</h2>
 
       <div style={{ marginBottom: 12 }}>
         <button
@@ -122,9 +106,9 @@ export default function ApiTestWidget({
               marginLeft: 8,
               padding: "6px 10px",
               borderRadius: 6,
-              border: "none",
-              background: "#3a3",
-              color: "#042",
+              border: "1px solid #3a3",
+              background: "transparent",
+              color: "#e6ffe6",
               cursor: "pointer",
               fontWeight: 600,
             }}
@@ -153,4 +137,4 @@ export default function ApiTestWidget({
       )}
     </div>
   );
-};
+}
