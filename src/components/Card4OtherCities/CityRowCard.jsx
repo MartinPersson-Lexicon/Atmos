@@ -1,5 +1,5 @@
 export default function CityRowCard({ data }) {
-  const { region, city, desc, hi, lo, icon } = data;
+  const { region, city, desc, temp, icon } = data;
 
   return (
     <article className="cityRow">
@@ -14,9 +14,7 @@ export default function CityRowCard({ data }) {
       </div>
 
       <div className="cityRow__right">
-        <span className="cityRow__hi">{hi}°</span>
-        <span className="cityRow__slash">/</span>
-        <span className="cityRow__lo">{lo}°</span>
+        <span className="cityRow__temp">{temp ?? "—"}°</span>
       </div>
     </article>
   );

@@ -31,6 +31,11 @@ export default function Home() {
           {/* Add 10 Day Forecast here if you have it */}
         </div>
       </div>
+      </div>
+
+      <div className="homeRight">
+        {/* Right side is empty for now (other cards will go here later) */}
+      </div>
     </div>
   );
 }
