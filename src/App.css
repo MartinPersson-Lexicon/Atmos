@@ -64,11 +64,16 @@ main {
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+.app-container.light {
+  background-color: #f5f5f5;
+  color: #1a1a2e;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+.main-content {
+  flex: 1;
+  padding: 20px 30px;
+  overflow-y: auto;
 }
 
 .card {
