@@ -3,10 +3,7 @@
 import { SMHI_STATION_IDS } from "../models/cityModel.js";
 import { getCityNameByStationId } from "../models/cityModel.js";
 
-
-const allStationIds = Array.isArray(SMHI_STATION_IDS)
-  ? SMHI_STATION_IDS
-  : [];
+const allStationIds = Array.isArray(SMHI_STATION_IDS) ? SMHI_STATION_IDS : [];
 
 async function fetchJson(url) {
   const res = await fetch(url);
@@ -58,14 +55,20 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
   };
   const period = opts.period || "latest-hour";
 
-  const [temp, windDirection, windSpeed, rainIntensity, relativeHumidity] = await Promise.all([
-    fetchLatestParam(stationId, params.temperature, period).catch(() => null),
-    fetchLatestParam(stationId, params.windDirection, period).catch(() => null),
-    fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
-    fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
-    fetchLatestParam(stationId, params.relativeHumidity, period).catch(() => null),
-
-  ]);
+  const [temp, windDirection, windSpeed, rainIntensity, relativeHumidity] =
+    await Promise.all([
+      fetchLatestParam(stationId, params.temperature, period).catch(() => null),
+      fetchLatestParam(stationId, params.windDirection, period).catch(
+        () => null
+      ),
+      fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
+      fetchLatestParam(stationId, params.rainIntensity, period).catch(
+        () => null
+      ),
+      fetchLatestParam(stationId, params.relativeHumidity, period).catch(
+        () => null
+      ),
+    ]);
   return {
     stationId: stationId,
     cityName: getCityNameByStationId(stationId),
@@ -94,12 +97,42 @@ export async function fetchWeaterForAllStrationIds(opts = {}) {
         const data = await populateWeatherModelFromStationId(stationId, opts);
         results[stationId] = { data, error: null };
       } catch (error) {
-        results[stationId] = { data: null, error: error.message || String(error) };
+        results[stationId] = {
+          data: null,
+          error: error.message || String(error),
+        };
       }
     })
   );
   return results;
 }
 
+// { id: 13, title: "Rådande väder", summary: "momentanvärde, 1 gång/tim resp 8 gånger/dygn", unit: "kod" },
 
-export default { fetchLatestParam, populateWeatherModelFromStationId, fetchWeaterForAllStrationIds };
+export async function fetchStationsForParameter(parameterId = 4) {
+  const url = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/${parameterId}.json`;
+  try {
+    const json = await fetchJson(url);
+    const stations = Array.isArray(json.station) ? json.station : [];
+    console.log("Get JSON done");
+    return stations.map((s) => ({
+      id: s.id ?? s.stationid ?? null,
+      name: s.name ?? s.stationname ?? "",
+      lat: s.latitude ?? s.lat ?? null,
+      lon: s.longitude ?? s.lon ?? null,
+      raw: s,
+    }));
+  } catch (err) {
+    console.log("Get JSON error", err);
+    throw err;
+  } finally {
+    console.log("Get JSON complete");
+  }
+}
+
+export default {
+  fetchLatestParam,
+  populateWeatherModelFromStationId,
+  fetchWeaterForAllStrationIds,
+  fetchStationsForParameter,
+};
