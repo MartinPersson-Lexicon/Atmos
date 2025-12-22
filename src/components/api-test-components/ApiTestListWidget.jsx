@@ -2,7 +2,6 @@ import "../../App.css";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import weatherApi from "../../api/weatherApi";
 import { formatDate } from "../../utils/ApiUtils";
-import { getCityNameByStationId } from "../../models/cityModel";
 
 export default function ApiTestListWidget() {
   const [loading, setLoading] = useState(false);
@@ -55,7 +54,7 @@ export default function ApiTestListWidget() {
                 <div className="latest-sample">
                   <p>Date: {formatDate(data.dateTime) ?? "--"}</p>
                   <p>
-                    City: {getCityNameByStationId(Number(stationId)) ?? "--"}
+                    City: {data.cityName ?? "--"}
                   </p>
                   <p>
                     Temp: {data.temperature !== null ? data.temperature : "-"}°

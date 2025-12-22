@@ -1,6 +1,7 @@
 // SMHI helper utilities
 
 import { SMHI_STATION_IDS } from "../models/cityModel.js";
+import { getCityNameByStationId } from "../models/cityModel.js";
 
 
 const allStationIds = Array.isArray(SMHI_STATION_IDS)
@@ -66,6 +67,8 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
 
   ]);
   return {
+    stationId: stationId,
+    cityName: getCityNameByStationId(stationId),
     dateTime: temp?.date ?? windDirection?.date ?? windSpeed?.date ?? null,
     temperature: temp?.value ?? null,
     windDirection: windDirection?.value ?? null,
