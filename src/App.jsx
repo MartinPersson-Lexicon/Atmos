@@ -7,7 +7,12 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import { Header, Footer, Sidebar } from "./components";
 
+import { useState } from 'react';
 function App() {
+  const [theme, setTheme] = useState('dark');
+  const [searchQuery, setSearchQuery] = useState('');
+  // const [activeNav, setActiveNav] = useState('dashboard')
+
   return (
     <div className="app-root">
       <Header />
