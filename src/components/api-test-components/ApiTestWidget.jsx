@@ -122,6 +122,8 @@ export default function ApiTestWidget({
 
       {model ? (
         <div className="latest-sample">
+          <h3>Station Id: {model.stationId}</h3>
+          <h3>City Name: {model.cityName}</h3>
           <h3>Updated at: {formatDate(model.dateTime)}</h3>
           <h3>
             Temp: {model.temperature !== null ? model.temperature : "-"} °
