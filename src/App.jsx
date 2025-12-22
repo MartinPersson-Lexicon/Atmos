@@ -5,7 +5,6 @@ import About from "./pages/About";
 import ApiTest from "./pages/ApiTest";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
-
 import { Header, Footer, Sidebar } from "./components";
 
 import { useState } from 'react';
@@ -16,14 +15,11 @@ function App() {
 
   return (
     <div className="app-root">
-      <Header
-        theme={theme}
-        setTheme={setTheme}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
+      <Header />
+
       <div className="app-layout">
         <Sidebar />
+
         <div className="content">
           <main>
             <Routes>
@@ -34,6 +30,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
+
           <Footer />
         </div>
       </div>
