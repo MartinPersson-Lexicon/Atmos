@@ -13,29 +13,30 @@ export default function Home() {
   const timeString = `${hours}:${minutes}`;
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-main">
-        <div className="left-column">
-          <CardOneWidget />
-          <Card4OtherCities />
+    <>
+      <div className="dashboard">
+        <div className="dashboard-main">
+          <div className="left-column">
+            <CardOneWidget />
+            <Card4OtherCities />
+          </div>
+          <div className="right-column">
+            <CardTwoWidget
+              wind={{ value: 7.9, unit: 'km/h', time: timeString }}
+              humidity={{ value: 85, desc: 'Humidity is good' }}
+              uvIndex={{ value: 4, desc: 'Moderate UV' }}
+              visibility={{ value: 5, time: timeString }}
+              sunrise={'4:50 AM'}
+              sunset={'6:45 PM'}
+            />
+            {/* Add 10 Day Forecast here if you have it */}
+          </div>
         </div>
-        <div className="right-column">
-          <CardTwoWidget
-            wind={{ value: 7.9, unit: 'km/h', time: timeString }}
-            humidity={{ value: 85, desc: 'Humidity is good' }}
-            uvIndex={{ value: 4, desc: 'Moderate UV' }}
-            visibility={{ value: 5, time: timeString }}
-            sunrise={'4:50 AM'}
-            sunset={'6:45 PM'}
-          />
-          {/* Add 10 Day Forecast here if you have it */}
-        </div>
-      </div>
       </div>
 
       <div className="homeRight">
         {/* Right side is empty for now (other cards will go here later) */}
       </div>
-    </div>
+    </>
   );
 }
