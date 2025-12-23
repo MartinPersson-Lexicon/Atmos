@@ -2,6 +2,7 @@
 
 import { SMHI_STATION_IDS } from "../models/cityModel.js";
 import { getCityNameByStationId } from "../models/cityModel.js";
+import SMHI_CODES_EN from "../models/SmhiCodesEn.js";
 
 const allStationIds = Array.isArray(SMHI_STATION_IDS) ? SMHI_STATION_IDS : [];
 
@@ -52,23 +53,27 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     windSpeed: 4,
     rainIntensity: 38,
     relativeHumidity: 6,
+    currentWeather: 13,
   };
   const period = opts.period || "latest-hour";
 
-  const [temp, windDirection, windSpeed, rainIntensity, relativeHumidity] =
-    await Promise.all([
-      fetchLatestParam(stationId, params.temperature, period).catch(() => null),
-      fetchLatestParam(stationId, params.windDirection, period).catch(
-        () => null
-      ),
-      fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
-      fetchLatestParam(stationId, params.rainIntensity, period).catch(
-        () => null
-      ),
-      fetchLatestParam(stationId, params.relativeHumidity, period).catch(
-        () => null
-      ),
-    ]);
+  const [
+    temp,
+    windDirection,
+    windSpeed,
+    rainIntensity,
+    relativeHumidity,
+    currentWeather,
+  ] = await Promise.all([
+    fetchLatestParam(stationId, params.temperature, period).catch(() => null),
+    fetchLatestParam(stationId, params.windDirection, period).catch(() => null),
+    fetchLatestParam(stationId, params.windSpeed, period).catch(() => null),
+    fetchLatestParam(stationId, params.rainIntensity, period).catch(() => null),
+    fetchLatestParam(stationId, params.relativeHumidity, period).catch(
+      () => null
+    ),
+    fetchLatestParam(stationId, params.currentWeather, period).catch(() => null),
+  ]);
   return {
     stationId: stationId,
     cityName: getCityNameByStationId(stationId),
@@ -78,6 +83,12 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     windSpeed: windSpeed?.value ?? null,
     rainIntensity: rainIntensity?.value ?? null,
     relativeHumidity: relativeHumidity?.value ?? null,
+    weatherCode: currentWeather?.value ?? null,
+    weatherText: (function () {
+      const code = currentWeather?.value;
+      if (code === null || code === undefined) return null;
+      return SMHI_CODES_EN[Number(code)] ?? String(code);
+    })(),
     quality: temp?.quality ?? null,
     raw: {
       temp: temp?.raw ?? null,
@@ -85,6 +96,7 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
       windSpeed: windSpeed?.raw ?? null,
       rainIntensity: rainIntensity?.raw ?? null,
       relativeHumidity: relativeHumidity?.raw ?? null,
+      currentWeather: currentWeather?.raw ?? null,
     },
   };
 }
