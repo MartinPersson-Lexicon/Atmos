@@ -1,0 +1,25 @@
+.station-list-widget {
+  margin: 0.5rem 0;
+}
+.station-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  max-height: 40vh;
+  overflow: auto;
+}
+.station-item {
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  color: #e6ffe6;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  font-size: 0.95rem;
+}
+.station-item .coords {
+  color: #cfcfe6;
+  font-weight: 400;
+  margin-left: 6px;
+}
