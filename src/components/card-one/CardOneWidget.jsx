@@ -1,8 +1,9 @@
 import "./CardOneWidget.css";
 
-function CardOneWidget() {
+function CardOneWidget({ cityName = "Malmö", onCityChange }) {
+  // UI-only data for now (can be replaced by real API later)
   const weatherData = {
-    location: "Malmö, Sweden",
+    location: `${cityName}, Sweden`,
     day: "Sunday",
     date: "17 Dec, 2025",
     temp: 28,
@@ -11,6 +12,9 @@ function CardOneWidget() {
     feelsLike: 31,
     icon: "🌧️",
   };
+
+  // Dev note: if we add a dropdown/search later, call onCityChange(newCity)
+  // const handleCityChange = (newCity) => onCityChange?.(newCity);
 
   return (
     <div className="weather-card">
