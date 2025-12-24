@@ -34,6 +34,7 @@ main {
 .app-root > .header,
 .app-root .header {
   position: fixed;
+  background-color: #15161a;
   top: 0;
   left: 0;
   right: 0;
@@ -43,6 +44,7 @@ main {
 /* Footer styling: keep it visible and pinned to the bottom of the content column */
 .app-footer {
   position: fixed;
+  background-color: #15161a;
   bottom: 0;
   left: 70px; /* align with sidebar width */
   right: 0;
