@@ -1,4 +1,26 @@
 import "./CardOneWidget.css";
+
+// Add style for visually hidden select value but visible dropdown options
+const selectStyle = {
+  background: "transparent",
+  color: "transparent",
+  border: "none",
+  fontSize: 18,
+  padding: 0,
+  margin: 0,
+  outline: "none",
+  opacity: 1,
+  width: "100%",
+  height: "100%",
+  position: "absolute",
+  left: 0,
+  top: 0,
+  cursor: "pointer",
+  zIndex: 2,
+  appearance: "none",
+  MozAppearance: "none",
+  WebkitAppearance: "none"
+};
 import { useEffect, useState } from "react";
 import weatherApi from "../../api/weatherApi";
 import { SMHI_CITY_MODELS } from "../../models/cityModel";
@@ -17,37 +39,37 @@ function iconFromWeatherCode(code, fallbackIcon = "❓") {
 }
 
 
+
 function CardOneWidget({ cityName = "Malmö" }) {
+  const [selectedCity, setSelectedCity] = useState(cityName);
   const [weatherData, setWeatherData] = useState({
     location: `${cityName}, Sweden`,
     day: "Sunday",
     date: "17 Dec, 2025",
     temp: 28,
     condition: "Heavy Rain",
-    // feelsLike: 31,
     icon: "🌧️",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  const fetchWeather = async () => {
+  const fetchWeather = async (cityArg) => {
+    const city = typeof cityArg === "string" ? cityArg : selectedCity;
     setLoading(true);
     setError(null);
     try {
-      // Find stationId for cityName
       const found = SMHI_CITY_MODELS.find(
-        (c) => c.city.toLowerCase() === cityName.toLowerCase()
+        (c) => c.city.toLowerCase() === city.toLowerCase()
       );
       const stationId = found ? found.stationId : 52350;
       const model = await weatherApi.populateWeatherModelFromStationId(stationId);
       setWeatherData({
-        location: `${cityName}, Sweden`,
+        location: `${city}, Sweden`,
         day: model.dateTime ? new Date(model.dateTime).toLocaleDateString("en-GB", { weekday: "long" }) : "-",
         date: model.dateTime ? new Date(model.dateTime).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-",
         temp: model.temperature ?? "-",
         condition: model.weatherText ?? "-",
-        // feelsLike: model.temperature ?? "-", // No feelsLike in SMHI, use temp
         icon: model.symbolCodeIcon || iconFromWeatherCode(model.weatherCode, "🌧️"),
       });
       setLastUpdated(new Date());
@@ -59,16 +81,31 @@ function CardOneWidget({ cityName = "Malmö" }) {
   };
 
   useEffect(() => {
-    fetchWeather();
+    fetchWeather(selectedCity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cityName]);
+  }, [selectedCity]);
 
   return (
     <div className="weather-card">
       <div className="weather-card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: 48 }}>
-        <div className="location">
+        <div className="location" style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span className="location-icon">📍</span>
-          <span>{weatherData.location}</span>
+          <span style={{ fontSize: 20, fontWeight: 600, color: "#fff", lineHeight: 1 }}>{selectedCity}</span>
+          <label style={{ display: "flex", alignItems: "center", marginLeft: 4, cursor: loading ? "not-allowed" : "pointer", position: "relative", height: 28, width: 28 }}>
+            <span style={{ fontSize: 18, color: "#fff", marginLeft: 2, marginRight: 2, zIndex: 1, pointerEvents: "none" }}>▼</span>
+            <select
+              value={selectedCity}
+              onChange={e => setSelectedCity(e.target.value)}
+              style={selectStyle}
+              disabled={loading}
+              aria-label="Select city"
+              className="city-dropdown-select"
+            >
+              {SMHI_CITY_MODELS.map(city => (
+                <option key={city.stationId} value={city.city} style={{ color: "#222" }}>{city.city}</option>
+              ))}
+            </select>
+          </label>
         </div>
         <button
           type="button"
@@ -86,7 +123,7 @@ function CardOneWidget({ cityName = "Malmö" }) {
             opacity: loading ? 0.6 : 1,
             transition: "opacity 0.15s"
           }}
-          onClick={fetchWeather}
+          onClick={() => fetchWeather(selectedCity)}
           disabled={loading}
           aria-label="Refresh weather"
         >
