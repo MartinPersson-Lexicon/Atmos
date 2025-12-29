@@ -1,9 +1,13 @@
 .weather-card {
-  background: #23262f;
-  border-radius: 20px;
+  background: #1b1d1f;
+  border-radius: 22px;
   padding: 25px;
-  border: 1px solid #3a3a5a;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: none;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
 }
 
 .weather-card-header {
@@ -13,13 +17,14 @@
   margin-bottom: 20px;
 }
 
+/* top pill with location – aligned with inner cards bg (#2a2c2e) */
 .location {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #1E1E1E;
+  background-color: #2a2c2e;
   padding: 10px 15px;
-  border-radius: 20px;
+  border-radius: 999px;
   font-size: 14px;
 }
 
