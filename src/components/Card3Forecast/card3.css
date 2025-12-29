@@ -1,77 +1,121 @@
-/* Card 3: same base styling as Card 4 */
+/* ===== CARD 3 (MATCHED WITH CARD 4) ===== */
+
+/* Main 10 Day Forecast card – I keep this visually consistent with .card4 */
 .card3 {
-  background: #23262f;
-  border-radius: 22px;
+  background: #1b1d1f; /* same as card4 background */
+  border-radius: 22px; /* same outer radius as card4 */
   padding: 22px;
   color: #ffffff;
   width: 100%;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35); /* same shadow as card4 */
+
+  /* I use the same font family so both cards feel like one design system */
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
     sans-serif;
 }
 
+/* ===== HEADER ===== */
+
 .card3__header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  align-items: center;
+  margin-bottom: 18px; /* same spacing style as card4 header */
 }
 
 .card3__title {
   margin: 0;
-  font-size: 22px;
+  font-size: 20px; /* slightly smaller than card4 title (22px) but same feeling */
   font-weight: 600;
   letter-spacing: 0.2px;
 }
 
 .card3__city {
-  opacity: 0.6;
-  font-weight: 500;
-  margin-left: 6px;
-  font-size: 0.95em;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* Horizontal scroll list  */
-.card3__days {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+/* Small status messages (loading / error) */
+.card3__status {
+  margin-top: 4px;
+  font-size: 12px;
 }
 
-/* Scrollbar */
-.card3__days::-webkit-scrollbar {
-  height: 8px;
-}
-.card3__days::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
+.card3__status--loading {
+  opacity: 0.75;
 }
 
-/* Each day mini-card */
+.card3__status--error {
+  color: #ff8c8c;
+}
+
+/* ===== DAYS GRID (2 ROWS, 5 COLUMNS) ===== */
+
+/* I place 10 days in a 5x2 grid so it feels compact like the design */
+.card3__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px; /* same gap feeling as list rows in card4 */
+}
+
+/* Single day card – I style it like a mini version of .cityRow */
 .card3Day {
-  min-width: 110px;
-  background: #2a2c2e;
-  border-radius: 18px;
-  padding: 14px 12px;
+  background: #2a2c2e; /* same inner background as .cityRow */
+  border-radius: 20px; /* same radius as .cityRow */
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  box-sizing: border-box;
+  min-height: 120px; /* I fix a height so all 10 cards align nicely */
 }
 
+/* Day label: Today, Tomorrow, Mon, Tue, ... */
 .card3Day__label {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase; /* I keep it similar to region label in card4 */
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+  text-align: center;
 }
 
+/* Icon / emoji */
 .card3Day__icon {
-  font-size: 42px;
-  line-height: 1;
+  font-size: 30px; /* visually balanced with the small card size */
+  margin-bottom: 6px;
 }
 
-.card3Day__temp {
-  font-size: 18px;
-  font-weight: 700;
+/* Temperatures container */
+.card3Day__temps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Max temperature – main value (similar strength to .cityRow__temp but smaller) */
+.card3Day__tempMax {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Min temperature – secondary value */
+.card3Day__tempMin {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Fallback text when there is no data */
+.card3__noData {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  opacity: 0.7;
+  color: #ffffff;
+  padding: 6px 0;
+  text-align: center;
 }
