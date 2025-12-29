@@ -2,7 +2,9 @@
 
 import { SMHI_STATION_IDS } from "../models/cityModel.js";
 import { getCityNameByStationId } from "../models/cityModel.js";
+import { getLonLatByStationId } from "../models/cityModel.js";
 import SMHI_CODES_EN from "../models/SmhiCodesEn.js";
+
 import { getLatestHourForecastForStation } from "./weatherForecastApi.js";
 import { getSmhiSymbolEmoji } from "../models/SmhiSymbolEmoji.js";
 
@@ -140,6 +142,14 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     // ignore forecast fetch errors — keep symbolCodeIcon null
   }
 
+  // Populate UV index (non-blocking)
+  try {
+    const latestUvIndex = await getUvIndexForStation(stationId);
+    model.uvIndex = latestUvIndex.uvIndex ?? null;
+  } catch {
+    // ignore UV index fetch errors — keep uvIndex null
+  }
+
   return model;
 }
 
@@ -182,6 +192,53 @@ export async function fetchStationsForParameter(parameterId = 4) {
   } finally {
     console.log("Get JSON complete");
   }
+}
+
+export async function getUvIndexForStation(stationId, parameterId = 116) {
+  const cityModel = getLonLatByStationId(stationId);
+
+  const buildUrl = (lon, lat) =>
+    `https://opendata-download-metanalys.smhi.se/api/category/strang1g/version/1/geotype/point/lon/${lon}/lat/${lat}/parameter/${parameterId}/data.json`;
+
+  const tryFetch = async (lon, lat) => {
+    try {
+      const json = await fetchJson(buildUrl(lon, lat));
+      // API may return either { timeSeries: [...] } or a top-level array of samples
+      if (Array.isArray(json) && json.length) {
+        const first = json[0];
+        return first && first.value !== null && first.value !== undefined ? Number(first.value) : null;
+      }
+      const first = json && Array.isArray(json.timeSeries) ? json.timeSeries[0] : null;
+      if (!first) return null;
+      if (Array.isArray(first.value) && first.value.length) {
+        const v = first.value[0];
+        return v && v.value !== null && v.value !== undefined ? Number(v.value) : null;
+      }
+      return first.value !== null && first.value !== undefined ? Number(first.value) : null;
+    } catch (err) {
+      console.log("UV fetch error for", lon, lat, err?.message ?? err);
+      return null;
+    }
+  };
+
+  let firstUvIndex = null;
+
+  const stationLon = cityModel.lon;
+  const stationLat = cityModel.lat;
+  if (stationLon != null && stationLat != null) {
+    firstUvIndex = await tryFetch(stationLon, stationLat);
+  }
+
+  if (firstUvIndex == null) {
+    const fallbackLon = 16.158;
+    const fallbackLat = 58.5812;
+    firstUvIndex = await tryFetch(fallbackLon, fallbackLat);
+  }
+
+  return {
+    stationId,
+    uvIndex: Number.isNaN(firstUvIndex) ? null : firstUvIndex,
+  };
 }
 
 export default {
