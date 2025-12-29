@@ -30,14 +30,7 @@ export default function Home() {
           </div>
 
           <div className="right-column">
-            <CardTwoWidget
-              wind={{ value: 7.9, unit: "km/h", time: timeString }}
-              humidity={{ value: 85, desc: "Humidity is good" }}
-              uvIndex={{ value: 4, desc: "Moderate UV" }}
-              visibility={{ value: 5, time: timeString }}
-              sunrise={"4:50 AM"}
-              sunset={"6:45 PM"}
-            />
+            <CardTwoWidget cityName={selectedCity} />
 
             <Card3Forecast cityName={selectedCity} />
           </div>

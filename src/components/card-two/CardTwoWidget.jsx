@@ -1,43 +1,117 @@
 import "./CardTwoWidget.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import weatherApi from "../../api/weatherApi";
+import { SMHI_CITY_MODELS } from "../../models/cityModel";
 
-const CardTwoWidget = ({ wind, humidity, uvIndex, visibility, sunrise, sunset }) => {
+// Helper to format time as HH:mm
+function formatTime(date) {
+  if (!date) return "--";
+  const d = new Date(date);
+  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+const CardTwoWidget = ({ cityName = "Malmö" }) => {
+  const [data, setData] = useState({
+    wind: { value: "-", unit: "km/h", time: "--" },
+    humidity: { value: "-", desc: "--" },
+    uvIndex: { value: "-", desc: "--" },
+    visibility: { value: "-", time: "--" },
+    sunrise: "--",
+    sunset: "--",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      setError(null);
+      try {
+        const found = SMHI_CITY_MODELS.find(
+          (c) => c.city.toLowerCase() === cityName.toLowerCase()
+        );
+        const stationId = found ? found.stationId : 52350;
+        // Fetch main weather model
+        const model = await weatherApi.populateWeatherModelFromStationId(stationId);
+        // Fetch visibility (parameter id 12)
+        let visibilityValue = "-";
+        let visibilityTime = model.dateTime ? formatTime(model.dateTime) : "--";
+        try {
+          const vis = await weatherApi.fetchLatestParam(stationId, 12, "latest-hour");
+          if (vis && vis.value !== null && vis.value !== undefined) {
+            // Convert meters to km, round to 1 decimal
+            visibilityValue = (vis.value / 1000).toFixed(1);
+            visibilityTime = vis.date ? formatTime(vis.date) : visibilityTime;
+          }
+        } catch {}
+        setData({
+          wind: {
+            value: model.windSpeed !== null && model.windSpeed !== undefined ? model.windSpeed : "-",
+            unit: "m/s",
+            time: model.dateTime ? formatTime(model.dateTime) : "--",
+          },
+          humidity: {
+            value: model.relativeHumidity !== null && model.relativeHumidity !== undefined ? model.relativeHumidity : "-",
+            desc: "--",
+          },
+          uvIndex: {
+            value: "-", // Not available from SMHI obs API
+            desc: "--",
+          },
+          visibility: {
+            value: visibilityValue,
+            time: visibilityTime,
+          },
+          sunrise: "--", // Not available from SMHI obs API
+          sunset: "--", // Not available from SMHI obs API
+        });
+      } catch (err) {
+        setError(err.message || String(err));
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [cityName]);
+
   return (
     <div className="card-two">
       <h2 className="card-two__title">Today's Highlight</h2>
+      {loading && <div style={{ color: "#aaa", fontSize: 13 }}>Loading…</div>}
+      {error && <div style={{ color: "#c00", fontSize: 13 }}>Error: {error}</div>}
       <div className="card-two__grid">
         {/* Top Row */}
         <div className="card-two__item">
           <div className="card-two__label">Wind Status</div>
-          <div className="card-two__value">{wind.value} <span className="card-two__unit">{wind.unit}</span></div>
-          <div className="card-two__desc">Updated {wind.time}</div>
+          <div className="card-two__value">{data.wind.value} <span className="card-two__unit">{data.wind.unit}</span></div>
+          <div className="card-two__desc">Updated {data.wind.time}</div>
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Humidity</div>
-          <div className="card-two__value">{humidity.value} <span className="card-two__unit">%</span></div>
-          <div className="card-two__desc">{humidity.desc}</div>
+          <div className="card-two__value">{data.humidity.value} <span className="card-two__unit">%</span></div>
+          <div className="card-two__desc">{data.humidity.desc}</div>
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Sunrise</div>
           <div className="card-two__value card-two__icon-value">
-            <span role="img" aria-label="sunrise">🌅</span> {sunrise}
+            <span role="img" aria-label="sunrise">🌅</span> {data.sunrise}
           </div>
         </div>
         {/* Bottom Row */}
         <div className="card-two__item">
           <div className="card-two__label">UV Index</div>
-          <div className="card-two__value">{uvIndex.value} <span className="card-two__unit">uv</span></div>
-          <div className="card-two__desc">{uvIndex.desc}</div>
+          <div className="card-two__value">{data.uvIndex.value} <span className="card-two__unit">uv</span></div>
+          <div className="card-two__desc">{data.uvIndex.desc}</div>
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Visibility</div>
-          <div className="card-two__value">{visibility.value} <span className="card-two__unit">km</span></div>
-          <div className="card-two__desc">Updated {visibility.time}</div>
+          <div className="card-two__value">{data.visibility.value} <span className="card-two__unit">km</span></div>
+          <div className="card-two__desc">Updated {data.visibility.time}</div>
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Sunset</div>
           <div className="card-two__value card-two__icon-value">
-            <span role="img" aria-label="sunset">🌅</span> {sunset}
+            <span role="img" aria-label="sunset">🌅</span> {data.sunset}
           </div>
         </div>
       </div>
