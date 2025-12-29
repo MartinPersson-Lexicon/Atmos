@@ -128,11 +128,14 @@ export default function ApiTestWidget({
           <h3>
             Temp: {model.temperature !== null ? model.temperature : "-"} °
           </h3>
+          <h3>
+            Symbol Code ({model.symbolCode ?? "--"}): {model.symbolCodeIcon !== null ? model.symbolCodeIcon : "-"}
+          </h3>
           <h3>Wind direction: {model.windDirection ?? "--"} dgr</h3>
           <h3>Wind speed: {model.windSpeed ?? "--"} m/s</h3>
           <h3>Rain intensity: {model.rainIntensity ?? "--"} mm/h</h3>
           <h3>Relative humidity: {model.relativeHumidity ?? "--"} %</h3>
-          <h3>Current Weather (code {model.weatherCode ?? "--"}): {model.weatherText ?? "--"}</h3>
+          <h3>Current WeatherCode (code {model.weatherCode ?? "--"}): {model.weatherText ?? "--"}</h3>
           <p>Quality of temperature measurement: {model.quality ?? "--"}</p>
         </div>
       ) : (

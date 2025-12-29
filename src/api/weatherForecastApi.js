@@ -67,6 +67,51 @@ export async function getForecastForStation(
   };
 }
 
+export async function getLatestHourForecastForStation(
+  stationId,
+//   parameterKeys = ["air_temperature", "symbol_code"]
+  parameterKeys = ["symbol_code"]
+) {
+  const full = await getForecastForStation(stationId, parameterKeys);
+  const series = Array.isArray(full.series) ? full.series : [];
+  if (!series.length) {
+    return {
+      ...full,
+      series: [],
+      range: null,
+    };
+  }
+
+  const times = series
+    .map((s) => Date.parse(s.time))
+    .filter((t) => !Number.isNaN(t));
+  if (!times.length) {
+    return {
+      ...full,
+      series: [],
+      range: null,
+    };
+  }
+
+  const maxT = Math.max(...times);
+  const hourMs = 60 * 60 * 1000;
+  const start = maxT - hourMs;
+
+  const filtered = series.filter((s) => {
+    const t = Date.parse(s.time);
+    return !Number.isNaN(t) && t >= start && t <= maxT;
+  });
+
+  return {
+    ...full,
+    series: filtered,
+    range: {
+      from: new Date(start).toISOString(),
+      to: new Date(maxT).toISOString(),
+    },
+  };
+}
+
 export async function get10DayForecastForStation(
   stationId,
   parameterKeys = ["air_temperature", "symbol_code"]
