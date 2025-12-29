@@ -61,3 +61,11 @@ export function getCityNameByStationId(stationId) {
   const city = SMHI_CITY_MODELS.find((c) => c.stationId === stationId);
   return city ? city.city : null;
 }
+
+export function getLonLatByStationId(stationId) {
+  const city = SMHI_CITY_MODELS.find((c) => c.stationId === stationId);
+  if (city && city.lat != null && city.lon != null) {
+    return { lat: city.lat, lon: city.lon };
+  }
+  return { lat: null, lon: null };
+}
