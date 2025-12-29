@@ -84,7 +84,7 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
             alignItems: "center",
             gap: 8,
             opacity: loading ? 0.6 : 1,
-            transition: "opacity 0.15s",
+            transition: "opacity 0.15s"
           }}
           onClick={fetchWeather}
           disabled={loading}
