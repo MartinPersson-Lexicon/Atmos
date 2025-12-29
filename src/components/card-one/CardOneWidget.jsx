@@ -17,7 +17,7 @@ function iconFromWeatherCode(code, fallbackIcon = "❓") {
 }
 
 
-function CardOneWidget({ cityName = "Malmö", onCityChange }) {
+function CardOneWidget({ cityName = "Malmö" }) {
   const [weatherData, setWeatherData] = useState({
     location: `${cityName}, Sweden`,
     day: "Sunday",
@@ -48,7 +48,7 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
         temp: model.temperature ?? "-",
         condition: model.weatherText ?? "-",
         // feelsLike: model.temperature ?? "-", // No feelsLike in SMHI, use temp
-        icon: iconFromWeatherCode(model.weatherCode, "🌧️"),
+        icon: model.symbolCodeIcon || iconFromWeatherCode(model.weatherCode, "🌧️"),
       });
       setLastUpdated(new Date());
     } catch (err) {
