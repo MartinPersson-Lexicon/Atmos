@@ -39,7 +39,22 @@ async function fetchLatestParam(
 ) {
   const url = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/${parameterId}/station/${stationId}/period/${periodKey}/data.json`;
   const json = await fetchJson(url);
-  return pickLatestFromValueArray(json);
+  const picked = pickLatestFromValueArray(json);
+  // If this is the temperature parameter (1), round to nearest integer
+  try {
+    if (
+      picked &&
+      picked.value !== null &&
+      picked.value !== undefined &&
+      Number(parameterId) === 1
+    ) {
+      const n = Number(picked.value);
+      picked.value = Number.isNaN(n) ? null : Math.round(n);
+    }
+  } catch {
+    //preserve original value on any unexpected error
+  }
+  return picked;
 }
 
 /**
@@ -72,7 +87,9 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     fetchLatestParam(stationId, params.relativeHumidity, period).catch(
       () => null
     ),
-    fetchLatestParam(stationId, params.currentWeather, period).catch(() => null),
+    fetchLatestParam(stationId, params.currentWeather, period).catch(
+      () => null
+    ),
   ]);
   return {
     stationId: stationId,
