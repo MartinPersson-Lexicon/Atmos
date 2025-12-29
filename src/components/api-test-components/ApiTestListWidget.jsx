@@ -58,7 +58,10 @@ export default function ApiTestListWidget() {
                     City: {data.cityName ?? "--"}
                   </p>
                   <p>
-                    Temp: {data.temperature !== null ? data.temperature : "-"}°
+                    Temp: { data.temperature ?? "--"}°
+                  </p>
+                  <p>
+                    SymbolCode ({data.symbolCode ?? "--"}): {data.symbolCodeIcon ?? "--"}
                   </p>
                 </div>
               ) : (
