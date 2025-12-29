@@ -3,6 +3,8 @@
 import { SMHI_STATION_IDS } from "../models/cityModel.js";
 import { getCityNameByStationId } from "../models/cityModel.js";
 import SMHI_CODES_EN from "../models/SmhiCodesEn.js";
+import { getLatestHourForecastForStation } from "./weatherForecastApi.js";
+import { getSmhiSymbolEmoji } from "../models/SmhiSymbolEmoji.js";
 
 const allStationIds = Array.isArray(SMHI_STATION_IDS) ? SMHI_STATION_IDS : [];
 
@@ -52,7 +54,7 @@ async function fetchLatestParam(
       picked.value = Number.isNaN(n) ? null : Math.round(n);
     }
   } catch {
-    //preserve original value on any unexpected error
+    // preserve original value on any unexpected error
   }
   return picked;
 }
@@ -91,7 +93,8 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
       () => null
     ),
   ]);
-  return {
+
+  const model = {
     stationId: stationId,
     cityName: getCityNameByStationId(stationId),
     dateTime: temp?.date ?? windDirection?.date ?? windSpeed?.date ?? null,
@@ -106,6 +109,8 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
       if (code === null || code === undefined) return null;
       return SMHI_CODES_EN[Number(code)] ?? String(code);
     })(),
+    symbolCode: null,
+    symbolCodeIcon: null,
     quality: temp?.quality ?? null,
     raw: {
       temp: temp?.raw ?? null,
@@ -116,6 +121,26 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
       currentWeather: currentWeather?.raw ?? null,
     },
   };
+
+  // Populate symbol code icon by querying the latest-hour forecast (non-blocking)
+  try {
+    const latestForecast = await getLatestHourForecastForStation(stationId, [
+      "symbol_code",
+    ]);
+    const sseries = Array.isArray(latestForecast.series)
+      ? latestForecast.series
+      : [];
+    if (sseries.length) {
+      const last = sseries[sseries.length - 1];
+      const code = last?.values?.symbol_code ?? null;
+      model.symbolCode = code;
+      model.symbolCodeIcon = getSmhiSymbolEmoji(code);
+    }
+  } catch {
+    // ignore forecast fetch errors — keep symbolCodeIcon null
+  }
+
+  return model;
 }
 
 export async function fetchWeaterForAllStrationIds(opts = {}) {
