@@ -1,28 +1,98 @@
 import "./CardOneWidget.css";
+import { useEffect, useState } from "react";
+import weatherApi from "../../api/weatherApi";
+import { SMHI_CITY_MODELS } from "../../models/cityModel";
+
+// Card4 icon logic
+function iconFromWeatherCode(code, fallbackIcon = "❓") {
+  const n = Number(code);
+  if (!Number.isFinite(n)) return fallbackIcon;
+  if (n >= 90 && n <= 99) return "⛈️";
+  if (n >= 70 && n <= 79) return "🌨️";
+  if ((n >= 50 && n <= 69) || (n >= 80 && n <= 86)) return "🌧️";
+  if ((n >= 10 && n <= 19) || (n >= 40 && n <= 49)) return "🌫️";
+  if (n >= 4 && n <= 9) return "☁️";
+  if (n >= 0 && n <= 3) return "☀️";
+  return fallbackIcon;
+}
+
 
 function CardOneWidget({ cityName = "Malmö", onCityChange }) {
-  // UI-only data for now (can be replaced by real API later)
-  const weatherData = {
+  const [weatherData, setWeatherData] = useState({
     location: `${cityName}, Sweden`,
     day: "Sunday",
     date: "17 Dec, 2025",
     temp: 28,
-    tempLow: 24,
     condition: "Heavy Rain",
-    feelsLike: 31,
+    // feelsLike: 31,
     icon: "🌧️",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
+
+  const fetchWeather = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Find stationId for cityName
+      const found = SMHI_CITY_MODELS.find(
+        (c) => c.city.toLowerCase() === cityName.toLowerCase()
+      );
+      const stationId = found ? found.stationId : 52350;
+      const model = await weatherApi.populateWeatherModelFromStationId(stationId);
+      setWeatherData({
+        location: `${cityName}, Sweden`,
+        day: model.dateTime ? new Date(model.dateTime).toLocaleDateString("en-GB", { weekday: "long" }) : "-",
+        date: model.dateTime ? new Date(model.dateTime).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-",
+        temp: model.temperature ?? "-",
+        condition: model.weatherText ?? "-",
+        // feelsLike: model.temperature ?? "-", // No feelsLike in SMHI, use temp
+        icon: iconFromWeatherCode(model.weatherCode, "🌧️"),
+      });
+      setLastUpdated(new Date());
+    } catch (err) {
+      setError(err.message || String(err));
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Dev note: if we add a dropdown/search later, call onCityChange(newCity)
-  // const handleCityChange = (newCity) => onCityChange?.(newCity);
+  useEffect(() => {
+    fetchWeather();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cityName]);
 
   return (
     <div className="weather-card">
-      <div className="weather-card-header">
+      <div className="weather-card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: 48 }}>
         <div className="location">
           <span className="location-icon">📍</span>
           <span>{weatherData.location}</span>
         </div>
+        <button
+          type="button"
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "rgba(255,255,255,0.55)",
+            fontSize: 13,
+            cursor: loading ? "not-allowed" : "pointer",
+            marginLeft: 8,
+            padding: "4px 8px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            opacity: loading ? 0.6 : 1,
+            transition: "opacity 0.15s",
+          }}
+          onClick={fetchWeather}
+          disabled={loading}
+          aria-label="Refresh weather"
+        >
+          {loading ? "Updating…" : "Refresh"}
+          <span style={{ fontSize: 18, marginLeft: 4 }}>↻</span>
+        </button>
       </div>
 
       <div className="weather-card-body">
@@ -31,14 +101,19 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
           <p className="date">{weatherData.date}</p>
           <div className="weather-icon">{weatherData.icon}</div>
           <p className="condition">{weatherData.condition}</p>
-          <p className="feels-like">Feels like {weatherData.feelsLike}°</p>
+
         </div>
 
         <div className="temperature">
           <span className="temp-main">{weatherData.temp}°C</span>
-          <span className="temp-low">/{weatherData.tempLow}°C</span>
         </div>
       </div>
+      {lastUpdated && (
+        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 6 }}>
+          Last update: {lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+        </div>
+      )}
+      {error && <div style={{color:"#c00",marginTop:8}}>Error: {error}</div>}
     </div>
   );
 }
