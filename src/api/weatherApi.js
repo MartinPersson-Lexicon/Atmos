@@ -7,6 +7,7 @@ import SMHI_CODES_EN from "../models/SmhiCodesEn.js";
 
 import { getLatestHourForecastForStation } from "./weatherForecastApi.js";
 import { getSmhiSymbolCodeEmoji } from "../models/SmhiSymbolCodesEmoji.js";
+import { getSmhiSymbolCodeText } from "../models/SmhiSymbolCodesText.js";
 
 const allStationIds = Array.isArray(SMHI_STATION_IDS) ? SMHI_STATION_IDS : [];
 
@@ -113,6 +114,7 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     })(),
     symbolCode: null,
     symbolCodeIcon: null,
+    symbolCodeText: null,
     quality: temp?.quality ?? null,
     raw: {
       temp: temp?.raw ?? null,
@@ -137,6 +139,7 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
       const code = last?.values?.symbol_code ?? null;
       model.symbolCode = code;
       model.symbolCodeIcon = getSmhiSymbolCodeEmoji(code);
+      model.symbolCodeText = getSmhiSymbolCodeText(code);
     }
   } catch {
     // ignore forecast fetch errors — keep symbolCodeIcon null
