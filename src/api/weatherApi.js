@@ -74,6 +74,7 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     rainIntensity: 38,
     relativeHumidity: 6,
     currentWeather: 13,
+    visibility: 12
   };
   const period = opts.period || "latest-hour";
 
@@ -84,6 +85,7 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     rainIntensity,
     relativeHumidity,
     currentWeather,
+    visibility,
   ] = await Promise.all([
     fetchLatestParam(stationId, params.temperature, period).catch(() => null),
     fetchLatestParam(stationId, params.windDirection, period).catch(() => null),
@@ -95,6 +97,7 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     fetchLatestParam(stationId, params.currentWeather, period).catch(
       () => null
     ),
+    fetchLatestParam(stationId, params.visibility, period).catch(() => null),
   ]);
 
   const model = {
@@ -107,6 +110,15 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     rainIntensity: rainIntensity?.value ?? null,
     relativeHumidity: relativeHumidity?.value ?? null,
     weatherCode: currentWeather?.value ?? null,
+    visibility: (function () {
+      const raw = visibility?.value ?? null;
+      if (raw === null || raw === undefined) return null;
+      const n = Number(raw);
+      if (Number.isNaN(n)) return null;
+      // convert meters to kilometers and round to nearest integer
+      return Math.round(n / 1000);
+    })(),
+
     weatherText: (function () {
       const code = currentWeather?.value;
       if (code === null || code === undefined) return null;
