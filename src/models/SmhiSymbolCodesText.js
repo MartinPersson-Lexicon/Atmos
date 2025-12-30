@@ -32,7 +32,7 @@ const SMHI_SYMBOL_CODES_TEXT = {
 export function getSmhiSymbolCodeText(code) {
   if (code === null || code === undefined) return null;
   const n = Number(code);
-  return SMHI_SYMBOL_CODES_TEXT[n] ?? "❓";
+  return SMHI_SYMBOL_CODES_TEXT[n];
 }
 
 export default SMHI_SYMBOL_CODES_TEXT;
