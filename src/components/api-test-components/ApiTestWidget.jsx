@@ -137,6 +137,7 @@ export default function ApiTestWidget({
           <h3>Rain intensity: {model.rainIntensity ?? "--"} mm/h</h3>
           <h3>Relative humidity: {model.relativeHumidity ?? "--"} %</h3>
           <h3>Uv Index: {model.uvIndex ?? "--"} mW/m²</h3>
+          <h3>Visibility: {model.visibility ?? "--"} km</h3>
           <h3>Current WeatherCode (code {model.weatherCode ?? "--"}): {model.weatherText ?? "--"}</h3>
           <p>Quality of temperature measurement: {model.quality ?? "--"}</p>
         </div>
