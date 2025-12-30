@@ -32,7 +32,7 @@ const SMHI_SYMBOL_CODES_EMOJI = {
 export function getSmhiSymbolCodeEmoji(code) {
   if (code === null || code === undefined) return null;
   const n = Number(code);
-  return SMHI_SYMBOL_CODES_EMOJI[n] ?? "❓";
+  return SMHI_SYMBOL_CODES_EMOJI[n];
 }
 
 export default SMHI_SYMBOL_CODES_EMOJI;
