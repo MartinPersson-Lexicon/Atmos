@@ -19,8 +19,9 @@ const selectStyle = {
   zIndex: 2,
   appearance: "none",
   MozAppearance: "none",
-  WebkitAppearance: "none"
+  WebkitAppearance: "none",
 };
+
 import { useEffect, useState } from "react";
 import weatherApi from "../../api/weatherApi";
 import { SMHI_CITY_MODELS } from "../../models/cityModel";
@@ -38,9 +39,8 @@ function iconFromWeatherCode(code, fallbackIcon = "❓") {
   return fallbackIcon;
 }
 
-
-
-function CardOneWidget({ cityName = "Malmö" }) {
+// NOTE: only small change here: added onCityChange
+function CardOneWidget({ cityName = "Malmö", onCityChange }) {
   const [selectedCity, setSelectedCity] = useState(cityName);
   const [weatherData, setWeatherData] = useState({
     location: `${cityName}, Sweden`,
@@ -54,6 +54,11 @@ function CardOneWidget({ cityName = "Malmö" }) {
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
+  // If parent changes cityName, keep local selectedCity in sync
+  useEffect(() => {
+    setSelectedCity(cityName);
+  }, [cityName]);
+
   const fetchWeather = async (cityArg) => {
     const city = typeof cityArg === "string" ? cityArg : selectedCity;
     setLoading(true);
@@ -63,14 +68,27 @@ function CardOneWidget({ cityName = "Malmö" }) {
         (c) => c.city.toLowerCase() === city.toLowerCase()
       );
       const stationId = found ? found.stationId : 52350;
-      const model = await weatherApi.populateWeatherModelFromStationId(stationId);
+      const model = await weatherApi.populateWeatherModelFromStationId(
+        stationId
+      );
       setWeatherData({
         location: `${city}, Sweden`,
-        day: model.dateTime ? new Date(model.dateTime).toLocaleDateString("en-GB", { weekday: "long" }) : "-",
-        date: model.dateTime ? new Date(model.dateTime).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-",
+        day: model.dateTime
+          ? new Date(model.dateTime).toLocaleDateString("en-GB", {
+              weekday: "long",
+            })
+          : "-",
+        date: model.dateTime
+          ? new Date(model.dateTime).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })
+          : "-",
         temp: model.temperature ?? "-",
         condition: model.weatherText ?? "-",
-        icon: model.symbolCodeIcon || iconFromWeatherCode(model.weatherCode, "🌧️"),
+        icon:
+          model.symbolCodeIcon || iconFromWeatherCode(model.weatherCode, "🌧️"),
       });
       setLastUpdated(new Date());
     } catch (err) {
@@ -87,22 +105,73 @@ function CardOneWidget({ cityName = "Malmö" }) {
 
   return (
     <div className="weather-card">
-      <div className="weather-card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: 48 }}>
-        <div className="location" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <div
+        className="weather-card-header"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          minHeight: 48,
+        }}
+      >
+        <div
+          className="location"
+          style={{ display: "flex", alignItems: "center", gap: 8 }}
+        >
           <span className="location-icon">📍</span>
-          <span style={{ fontSize: 20, fontWeight: 600, color: "#fff", lineHeight: 1 }}>{selectedCity}</span>
-          <label style={{ display: "flex", alignItems: "center", marginLeft: 4, cursor: loading ? "not-allowed" : "pointer", position: "relative", height: 28, width: 28 }}>
-            <span style={{ fontSize: 18, color: "#fff", marginLeft: 2, marginRight: 2, zIndex: 1, pointerEvents: "none" }}>▼</span>
+          <span
+            style={{
+              fontSize: 20,
+              fontWeight: 600,
+              color: "#fff",
+              lineHeight: 1,
+            }}
+          >
+            {selectedCity}
+          </span>
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: 4,
+              cursor: loading ? "not-allowed" : "pointer",
+              position: "relative",
+              height: 28,
+              width: 28,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 18,
+                color: "#fff",
+                marginLeft: 2,
+                marginRight: 2,
+                zIndex: 1,
+                pointerEvents: "none",
+              }}
+            >
+              ▼
+            </span>
             <select
               value={selectedCity}
-              onChange={e => setSelectedCity(e.target.value)}
+              onChange={(e) => {
+                const newCity = e.target.value;
+                setSelectedCity(newCity); // update Card 1
+                if (onCityChange) onCityChange(newCity); // notify Home -> Card3
+              }}
               style={selectStyle}
               disabled={loading}
               aria-label="Select city"
               className="city-dropdown-select"
             >
-              {SMHI_CITY_MODELS.map(city => (
-                <option key={city.stationId} value={city.city} style={{ color: "#222" }}>{city.city}</option>
+              {SMHI_CITY_MODELS.map((city) => (
+                <option
+                  key={city.stationId}
+                  value={city.city}
+                  style={{ color: "#222" }}
+                >
+                  {city.city}
+                </option>
               ))}
             </select>
           </label>
@@ -121,7 +190,7 @@ function CardOneWidget({ cityName = "Malmö" }) {
             alignItems: "center",
             gap: 8,
             opacity: loading ? 0.6 : 1,
-            transition: "opacity 0.15s"
+            transition: "opacity 0.15s",
           }}
           onClick={() => fetchWeather(selectedCity)}
           disabled={loading}
@@ -138,7 +207,6 @@ function CardOneWidget({ cityName = "Malmö" }) {
           <p className="date">{weatherData.date}</p>
           <div className="weather-icon">{weatherData.icon}</div>
           <p className="condition">{weatherData.condition}</p>
-
         </div>
 
         <div className="temperature">
@@ -147,10 +215,16 @@ function CardOneWidget({ cityName = "Malmö" }) {
       </div>
       {lastUpdated && (
         <div style={{ fontSize: 12, opacity: 0.6, marginTop: 6 }}>
-          Last update: {lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          Last update:{" "}
+          {lastUpdated.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
         </div>
       )}
-      {error && <div style={{color:"#c00",marginTop:8}}>Error: {error}</div>}
+      {error && (
+        <div style={{ color: "#c00", marginTop: 8 }}>Error: {error}</div>
+      )}
     </div>
   );
 }
