@@ -6,7 +6,8 @@ import { getLonLatByStationId } from "../models/cityModel.js";
 import SMHI_CODES_EN from "../models/SmhiCodesEn.js";
 
 import { getLatestHourForecastForStation } from "./weatherForecastApi.js";
-import { getSmhiSymbolEmoji } from "../models/SmhiSymbolEmoji.js";
+import { getSmhiSymbolCodeEmoji } from "../models/SmhiSymbolCodesEmoji.js";
+import { getSmhiSymbolCodeText } from "../models/SmhiSymbolCodesText.js";
 
 const allStationIds = Array.isArray(SMHI_STATION_IDS) ? SMHI_STATION_IDS : [];
 
@@ -113,6 +114,7 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
     })(),
     symbolCode: null,
     symbolCodeIcon: null,
+    symbolCodeText: null,
     quality: temp?.quality ?? null,
     raw: {
       temp: temp?.raw ?? null,
@@ -136,7 +138,8 @@ export async function populateWeatherModelFromStationId(stationId, opts = {}) {
       const last = sseries[sseries.length - 1];
       const code = last?.values?.symbol_code ?? null;
       model.symbolCode = code;
-      model.symbolCodeIcon = getSmhiSymbolEmoji(code);
+      model.symbolCodeIcon = getSmhiSymbolCodeEmoji(code);
+      model.symbolCodeText = getSmhiSymbolCodeText(code);
     }
   } catch {
     // ignore forecast fetch errors — keep symbolCodeIcon null
@@ -206,15 +209,22 @@ export async function getUvIndexForStation(stationId, parameterId = 116) {
       // API may return either { timeSeries: [...] } or a top-level array of samples
       if (Array.isArray(json) && json.length) {
         const first = json[0];
-        return first && first.value !== null && first.value !== undefined ? Number(first.value) : null;
+        return first && first.value !== null && first.value !== undefined
+          ? Number(first.value)
+          : null;
       }
-      const first = json && Array.isArray(json.timeSeries) ? json.timeSeries[0] : null;
+      const first =
+        json && Array.isArray(json.timeSeries) ? json.timeSeries[0] : null;
       if (!first) return null;
       if (Array.isArray(first.value) && first.value.length) {
         const v = first.value[0];
-        return v && v.value !== null && v.value !== undefined ? Number(v.value) : null;
+        return v && v.value !== null && v.value !== undefined
+          ? Number(v.value)
+          : null;
       }
-      return first.value !== null && first.value !== undefined ? Number(first.value) : null;
+      return first.value !== null && first.value !== undefined
+        ? Number(first.value)
+        : null;
     } catch (err) {
       console.log("UV fetch error for", lon, lat, err?.message ?? err);
       return null;
