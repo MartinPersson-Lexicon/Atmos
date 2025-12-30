@@ -2,7 +2,8 @@
   background: #1b1d1f;
   border-radius: 22px;
   padding: 25px;
-  border: none;
+  /* Orange border to match the other cards */
+  border: 1px solid #ff8c00;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
   color: #ffffff;
 
