@@ -9,6 +9,9 @@
   width: 100%;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35); /* same shadow as card4 */
 
+  /* 🔶 Orange border to match Card 1, Card 2, Card 4 */
+  border: 1px solid #ff8c00;
+
   /* I use the same font family so both cards feel like one design system */
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
     sans-serif;

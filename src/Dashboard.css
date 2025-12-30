@@ -1,24 +1,41 @@
+/* Main dashboard wrapper */
 .dashboard {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  background: #181a20;
-  padding: 40px 0;
+  padding: 24px 32px;
+  box-sizing: border-box;
 }
+
+/* 2x2 grid: 
+   Row 1: Card 1 | Card 2
+   Row 2: Card 4 | Card 3
+*/
 .dashboard-main {
-  display: flex;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 24px;
+  align-items: stretch;
 }
-.left-column, .right-column {
+
+/* Each grid cell wraps exactly one card */
+.dashboard-cell {
   display: flex;
-  flex-direction: column;
-  gap: 32px;
 }
-.card, .weather-card, .card4, .highlight-card {
-  background: #23262f;
-  border-radius: 24px;
-  padding: 32px;
-  color: #fff;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+
+/* Make the card fill the whole cell width */
+.dashboard-cell > * {
+  width: 100%;
+}
+
+/* Optional: if you want different behavior on small screens,
+   you can stack the cards in one column */
+@media (max-width: 900px) {
+  .dashboard-main {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+}
+
+/* Keep homeRight block (if used somewhere else) */
+.homeRight {
+  margin-top: 24px;
 }
