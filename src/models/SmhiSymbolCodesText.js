@@ -1,5 +1,5 @@
 // SMHI weather symbol codes (symbol_code 1-27) — mapping -> English description
-const SMHI_SYMBOL_CODES = {
+const SMHI_SYMBOL_CODES_TEXT = {
   1: "Clear sky",
   2: "Nearly clear sky",
   3: "Variable cloudiness",
@@ -29,4 +29,10 @@ const SMHI_SYMBOL_CODES = {
   27: "Heavy snowfall",
 };
 
-export default SMHI_SYMBOL_CODES;
+export function getSmhiSymbolCodeText(code) {
+  if (code === null || code === undefined) return null;
+  const n = Number(code);
+  return SMHI_SYMBOL_CODES_TEXT[n];
+}
+
+export default SMHI_SYMBOL_CODES_TEXT;
