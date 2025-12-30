@@ -54,15 +54,13 @@ export default function ApiTestListWidget() {
               ) : data ? (
                 <div className="latest-sample">
                   <p>Date: {formatDate(data.dateTime) ?? "--"}</p>
+                  <p>City: {data.cityName ?? "--"}</p>
+                  <p>Temp: {data.temperature ?? "--"}°</p>
                   <p>
-                    City: {data.cityName ?? "--"}
+                    SymbolCode: ({data.symbolCode ?? "--"}):{" "}
+                    {data.symbolCodeIcon ?? "--"}
                   </p>
-                  <p>
-                    Temp: { data.temperature ?? "--"}°
-                  </p>
-                  <p>
-                    SymbolCode ({data.symbolCode ?? "--"}): {data.symbolCodeIcon ?? "--"}
-                  </p>
+                  <p>SymboText: {data.symbolCodeText ?? "--"}</p>
                 </div>
               ) : (
                 <p>No data available</p>
