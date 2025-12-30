@@ -1,5 +1,5 @@
 // SMHI symbol_code -> emoji mapping (1-27)
-const SMHI_SYMBOL_EMOJI = {
+const SMHI_SYMBOL_CODES_EMOJI = {
   1: "☀️",
   2: "🌤️",
   3: "⛅",
@@ -29,10 +29,10 @@ const SMHI_SYMBOL_EMOJI = {
   27: "❄️",
 };
 
-export function getSmhiSymbolEmoji(code) {
+export function getSmhiSymbolCodeEmoji(code) {
   if (code === null || code === undefined) return null;
   const n = Number(code);
-  return SMHI_SYMBOL_EMOJI[n] ?? "❓";
+  return SMHI_SYMBOL_CODES_EMOJI[n] ?? "❓";
 }
 
-export default SMHI_SYMBOL_EMOJI;
+export default SMHI_SYMBOL_CODES_EMOJI;

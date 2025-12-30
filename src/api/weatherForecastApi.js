@@ -1,5 +1,6 @@
 import { SMHI_CITY_MODELS } from "../models/cityModel.js";
-import { getSmhiSymbolEmoji } from "../models/SmhiSymbolEmoji.js";
+import { getSmhiSymbolCodeEmoji } from "../models/SmhiSymbolCodesEmoji.js";
+import { getSmhiSymbolCodeText } from "../models/SmhiSymbolCodesText.js";
 
 const baseUrl =
   "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1";
@@ -54,7 +55,8 @@ export async function getForecastForStation(
       raw: ts,
     };
     if (keys.includes("symbol_code"))
-      entry.emoji = getSmhiSymbolEmoji(values["symbol_code"]);
+      entry.emoji = getSmhiSymbolCodeEmoji(values["symbol_code"]);
+    entry.symbol_text = getSmhiSymbolCodeText(values["symbol_code"]);
     return entry;
   });
 
@@ -69,7 +71,7 @@ export async function getForecastForStation(
 
 export async function getLatestHourForecastForStation(
   stationId,
-//   parameterKeys = ["air_temperature", "symbol_code"]
+  //   parameterKeys = ["air_temperature", "symbol_code"]
   parameterKeys = ["symbol_code"]
 ) {
   const full = await getForecastForStation(stationId, parameterKeys);
@@ -179,7 +181,8 @@ export async function get10DayForecastForStation(
         raw: items.map((it) => it.raw ?? it),
       };
       if (keys.includes("symbol_code"))
-        entry.emoji = getSmhiSymbolEmoji(values["symbol_code"]);
+        entry.emoji = getSmhiSymbolCodeEmoji(values["symbol_code"]);
+      entry.symbol_text = getSmhiSymbolCodeText(values["symbol_code"]);
       return entry;
     });
 
