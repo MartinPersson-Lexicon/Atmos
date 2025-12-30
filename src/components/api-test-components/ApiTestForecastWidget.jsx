@@ -137,7 +137,8 @@ export default function ApiTestForecastWidget({ stationId = 52350 }) {
                       <th style={{ textAlign: "left", padding: 6 }}>
                         symbol_code
                       </th>
-                      <th style={{ textAlign: "left", padding: 6 }}>Emoji</th>
+                      <th style={{ textAlign: "left", padding: 6 }}>SymbolCodeEmoji</th>
+                        <th style={{ textAlign: "left", padding: 6 }}>SymbolCodeText</th>
                     </>
                   )}
                 </tr>
@@ -171,6 +172,7 @@ export default function ApiTestForecastWidget({ stationId = 52350 }) {
                           {s.values?.symbol_code ?? "—"}
                         </td>
                         <td style={{ padding: 6 }}>{s.emoji ?? "—"}</td>
+                        <td style={{ padding: 6 }}>{s.symbol_text ?? "—"}</td>
                       </>
                     )}
                   </tr>
