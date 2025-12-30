@@ -1,14 +1,16 @@
 .sidebar {
-  width: 70px;
+  width: 80px;
   background-color: #1e1e1e;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 22px;
   border-right: 1px solid #2a2a4a;
   align-self: flex-start;
   position: sticky;
-  top: 70px; /* sit below the fixed header */
+  top: 120px; /* sit below the fixed header */
   z-index: 1; /* below header */
 }
 
@@ -29,7 +31,7 @@
 .nav-icons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
 .nav-icon {
@@ -40,18 +42,38 @@
   justify-content: center;
   color: #6b6b8d;
   background: none;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 12px;
   cursor: pointer;
   font-size: 18px;
   transition: all 0.3s ease;
 }
 
+.nav-icon img,
+.nav-icon .nav-icon-img {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
 .nav-icon:hover,
-.nav-icon.active {
-  background-color: #1e1e1e;
+.nav-icon:hover {
+  background-color: #252526;
   color: #fff;
 }
+
+.nav-icon.active {
+  background: transparent;
+  color: #fff;
+  transform: scale(1.06);
+  box-shadow: none;
+  border-radius: 12px;
+  outline: 1px solid rgba(255,255,255,0.06);
+  border-color: #ff8c00; /* orange border when active */
+}
+
+/* small indicator dot on the left for active */
+/* no left indicator dot for active state */
 
 .help-icon {
   margin-top: auto;
