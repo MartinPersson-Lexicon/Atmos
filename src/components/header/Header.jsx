@@ -27,7 +27,6 @@ export default function Header({
         </div>
 
         <div className="header-actions">
-          <button className="icon-btn">⚙️</button>
           <button
             className="icon-btn theme-toggle"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
