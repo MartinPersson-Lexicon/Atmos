@@ -43,7 +43,9 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
             visibilityValue = (vis.value / 1000).toFixed(1);
             visibilityTime = vis.date ? formatTime(vis.date) : visibilityTime;
           }
-        } catch {}
+        } catch (err) {
+        console.error(err);
+        }
 
         // Fetch UV index from SMHI API
         let uvValue = "-";
@@ -59,7 +61,9 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
             else if (uvValue < 11) uvDesc = "Very High";
             else uvDesc = "Extreme";
           }
-        } catch {}
+        } catch (err) {
+        console.error(err);
+        }
 
         setData({
           wind: {
