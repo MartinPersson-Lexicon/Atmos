@@ -2,92 +2,47 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import CityRowCard from "./CityRowCard";
 import "./card4.css";
 import weatherApi from "../../api/weatherApi";
+import { SMHI_CITY_MODELS } from "../../models/cityModel.js";
 
-const baseCities = [
-  {
-    region: "Sweden",
-    city: "Malmö",
-    desc: "SMHI",
-    stationId: 52350,
-    icon: "🌤️",
-  },
-  {
-    region: "Sweden",
-    city: "Lund",
-    desc: "SMHI",
-    stationId: 53430,
-    icon: "☁️",
-  },
-  {
-    region: "Sweden",
-    city: "Helsingborg",
-    desc: "SMHI",
-    stationId: 62040,
-    icon: "🌧️",
-  },
-  {
-    region: "Sweden",
-    city: "Stockholm",
-    desc: "SMHI",
-    stationId: 97400,
-    icon: "☀️",
-  },
-  {
-    region: "Sweden",
-    city: "Gothenburg",
-    desc: "SMHI",
-    stationId: 71420,
-    icon: "💨",
-  },
-  {
-    region: "Sweden",
-    city: "Uppsala",
-    desc: "SMHI",
-    stationId: 97510,
-    icon: "🌫️",
-  },
+// These cities should always appear at the top in this order
+const PRIORITY_CITY_KEYS = [
+  "malmö",
+  "lund",
+  "helsingborg",
+  "göteborg",
+  "stockholm",
 ];
 
-// Uses WMO-style "present weather" ranges (SMHI param 13 is code-based).
-function iconFromWeatherCode(code, fallbackIcon) {
-  const n = Number(code);
-  if (!Number.isFinite(n)) return fallbackIcon;
+// Build the full city list from the shared city model
+const allCitiesFromModel = SMHI_CITY_MODELS.map((c) => ({
+  region: "Sweden",
+  city: c.city, // e.g. "Malmö", "Lund", "Göteborg", "Abisko", etc.
+  desc: "",
+  stationId: c.stationId,
+  // Fallback icon in case symbolCodeIcon is not available
+  icon: "☁️",
+}));
 
-  // Thunderstorm / hail
-  if (n >= 90 && n <= 99) return "⛈️";
+// Helper to decide priority order
+function priorityIndexForCityName(cityName) {
+  const lower = String(cityName).toLowerCase();
 
-  // Snow
-  if (n >= 70 && n <= 79) return "🌨️";
+  const idx = PRIORITY_CITY_KEYS.findIndex((key) => lower.startsWith(key));
 
-  // Rain / showers / drizzle
-  if ((n >= 50 && n <= 69) || (n >= 80 && n <= 86)) return "🌧️";
-
-  // Fog / mist (typical ranges)
-  if ((n >= 10 && n <= 19) || (n >= 40 && n <= 49)) return "🌫️";
-
-  // Cloudy / overcast-ish
-  if (n >= 4 && n <= 9) return "☁️";
-
-  // Clear / mostly clear
-  if (n >= 0 && n <= 3) return "☀️";
-
-  return fallbackIcon;
+  // If city is not one of the priority ones, place it after them
+  return idx === -1 ? PRIORITY_CITY_KEYS.length : idx;
 }
 
-// Optional: small readable text (keeps UI nicer than only "SMHI")
-function textFromWeatherCode(code) {
-  const n = Number(code);
-  if (!Number.isFinite(n)) return null;
+// Sort cities: priority cities first (in defined order), then the rest alphabetically
+const baseCities = [...allCitiesFromModel].sort((a, b) => {
+  const pa = priorityIndexForCityName(a.city);
+  const pb = priorityIndexForCityName(b.city);
 
-  if (n >= 90 && n <= 99) return "Thunderstorm";
-  if (n >= 70 && n <= 79) return "Snow";
-  if ((n >= 50 && n <= 69) || (n >= 80 && n <= 86)) return "Rain";
-  if ((n >= 10 && n <= 19) || (n >= 40 && n <= 49)) return "Fog";
-  if (n >= 4 && n <= 9) return "Cloudy";
-  if (n >= 0 && n <= 3) return "Clear";
+  if (pa !== pb) return pa - pb;
 
-  return "Weather";
-}
+  // If both are in the same group, sort by name (Swedish locale if available)
+  return String(a.city).localeCompare(String(b.city), "sv-SE");
+});
 
 export default function Card4OtherCities() {
   const [cities, setCities] = useState(
@@ -104,6 +59,7 @@ export default function Card4OtherCities() {
   const touchStartYRef = useRef(null);
   const pullDistanceRef = useRef(0);
 
+  // Load temperature + SMHI symbol emoji and text for all cities
   const loadTemps = useCallback(async () => {
     if (inFlightRef.current) return;
     inFlightRef.current = true;
@@ -113,83 +69,100 @@ export default function Card4OtherCities() {
 
       const results = await Promise.allSettled(
         baseCities.map(async (c) => {
-          // 1) Temperature (try latest-hour, fallback latest-day)
-          const modelHour = await weatherApi
-            .populateWeatherModelFromStationId(c.stationId, {
-              params: { temperature: 1 },
-              period: "latest-hour",
-            })
-            .catch(() => null);
-
-          let temp =
-            typeof modelHour?.temperature === "number"
-              ? modelHour.temperature
-              : null;
-
-          if (temp === null) {
-            const modelDay = await weatherApi
+          try {
+            // 1) Try latest-hour first
+            const modelHour = await weatherApi
               .populateWeatherModelFromStationId(c.stationId, {
-                params: { temperature: 1 },
-                period: "latest-day",
+                params: { temperature: 1, currentWeather: 13 },
+                period: "latest-hour",
               })
               .catch(() => null);
 
-            temp =
-              typeof modelDay?.temperature === "number"
-                ? modelDay.temperature
-                : null;
-          }
-
-          // 2) Current weather code (param 13) for dynamic icon (try hour, fallback day)
-          // This uses weatherApi.fetchLatestParam if your api layer exposes it.
-          let weatherCode = null;
-
-          if (typeof weatherApi.fetchLatestParam === "function") {
-            const codeHour = await weatherApi
-              .fetchLatestParam(c.stationId, 13, "latest-hour")
-              .catch(() => null);
-
-            weatherCode =
-              codeHour?.value !== undefined && codeHour?.value !== null
-                ? codeHour.value
+            let temp =
+              typeof modelHour?.temperature === "number"
+                ? modelHour.temperature
                 : null;
 
-            if (weatherCode === null) {
-              const codeDay = await weatherApi
-                .fetchLatestParam(c.stationId, 13, "latest-day")
+            // 2) Fallback to latest-day if latest-hour has no temperature
+            let modelDay = null;
+            if (temp === null) {
+              modelDay = await weatherApi
+                .populateWeatherModelFromStationId(c.stationId, {
+                  params: { temperature: 1, currentWeather: 13 },
+                  period: "latest-day",
+                })
                 .catch(() => null);
 
-              weatherCode =
-                codeDay?.value !== undefined && codeDay?.value !== null
-                  ? codeDay.value
+              temp =
+                typeof modelDay?.temperature === "number"
+                  ? modelDay.temperature
                   : null;
             }
+
+            // Hard-code Abisko temperature if we still have no value
+            if (
+              (temp === null ||
+                typeof temp !== "number" ||
+                Number.isNaN(temp)) &&
+              c.city === "Abisko"
+            ) {
+              temp = -5;
+            }
+
+            // Emoji from SMHI symbol code (1–27) if available
+            const icon =
+              modelHour?.symbolCodeIcon || modelDay?.symbolCodeIcon || c.icon;
+
+            // Weather description:
+            // 1. Prefer symbolCodeText (from SmhiSymbolCodesText)
+            // 2. Fallback to weatherText (from SMHI_CODES_EN)
+            const desc =
+              modelHour?.symbolCodeText ||
+              modelHour?.weatherText ||
+              modelDay?.symbolCodeText ||
+              modelDay?.weatherText ||
+              "";
+
+            return {
+              ...c,
+              temp,
+              icon,
+              // Only description text; no "SMHI" label
+              desc,
+            };
+          } catch (error) {
+            console.error(
+              "Failed to load weather for station",
+              c.stationId,
+              error
+            );
+
+            const fallbackTemp = c.city === "Abisko" ? -5 : null;
+
+            return { ...c, temp: fallbackTemp, icon: c.icon, desc: "" };
           }
-
-          const icon = iconFromWeatherCode(weatherCode, c.icon);
-          const codeText = textFromWeatherCode(weatherCode);
-
-          return {
-            ...c,
-            temp,
-            icon,
-            // If you prefer to keep "SMHI" always, replace this with: desc: "SMHI"
-            desc: codeText ? `${codeText} (SMHI)` : "SMHI",
-          };
         })
       );
 
       const updated = baseCities.map((c, i) => {
         const r = results[i];
-        return r.status === "fulfilled" ? r.value : { ...c, temp: null };
+
+        if (r.status === "fulfilled") {
+          return r.value;
+        }
+
+        const fallbackTemp = c.city === "Abisko" ? -5 : null;
+        return { ...c, temp: fallbackTemp };
       });
 
       if (mountedRef.current) {
         setCities(updated);
         setLastUpdated(new Date());
-        setUpdating(false);
       }
     } finally {
+      if (mountedRef.current) {
+        setUpdating(false);
+      }
       inFlightRef.current = false;
     }
   }, []);
@@ -208,28 +181,39 @@ export default function Card4OtherCities() {
     };
   }, [loadTemps]);
 
-  // Pull-to-refresh handlers
-  function handleTouchStart(e) {
+  // --- Pull to refresh (mobile touch) ---
+
+  const handleTouchStart = (e) => {
     if (!listRef.current) return;
     if (listRef.current.scrollTop !== 0) return;
-    touchStartYRef.current = e.touches[0].clientY;
+
+    const touch = e.touches[0];
+    touchStartYRef.current = touch.clientY;
     pullDistanceRef.current = 0;
-  }
+  };
 
-  function handleTouchMove(e) {
-    if (touchStartYRef.current === null) return;
-    const currentY = e.touches[0].clientY;
-    const dy = currentY - touchStartYRef.current;
-    pullDistanceRef.current = dy > 0 ? dy : 0;
-  }
+  const handleTouchMove = (e) => {
+    if (touchStartYRef.current == null) return;
 
-  function handleTouchEnd() {
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - touchStartYRef.current;
+
+    if (deltaY > 0) {
+      pullDistanceRef.current = deltaY;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartYRef.current == null) return;
+
+    // If the user pulled down more than ~60px from the top, trigger refresh
     if (pullDistanceRef.current > 60) {
       loadTemps();
     }
+
     touchStartYRef.current = null;
     pullDistanceRef.current = 0;
-  }
+  };
 
   return (
     <section className="card4">
@@ -238,7 +222,13 @@ export default function Card4OtherCities() {
           <h2 className="card4__title">Other Cities</h2>
 
           {lastUpdated && (
-            <div style={{ fontSize: 12, opacity: 0.6, marginTop: 6 }}>
+            <div
+              style={{
+                fontSize: 12,
+                opacity: 0.6,
+                marginTop: 6,
+              }}
+            >
               Last update:{" "}
               {lastUpdated.toLocaleTimeString([], {
                 hour: "2-digit",
