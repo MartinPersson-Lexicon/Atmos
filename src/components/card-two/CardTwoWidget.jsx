@@ -44,6 +44,23 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
             visibilityTime = vis.date ? formatTime(vis.date) : visibilityTime;
           }
         } catch {}
+
+        // Fetch UV index from SMHI API
+        let uvValue = "-";
+        let uvDesc = "--";
+        try {
+          const uv = await weatherApi.getUvIndexForStation(stationId);
+          if (uv && uv.uvIndex !== null && uv.uvIndex !== undefined) {
+            uvValue = uv.uvIndex;
+            // Simple description based on value
+            if (uvValue < 3) uvDesc = "Low";
+            else if (uvValue < 6) uvDesc = "Moderate";
+            else if (uvValue < 8) uvDesc = "High";
+            else if (uvValue < 11) uvDesc = "Very High";
+            else uvDesc = "Extreme";
+          }
+        } catch {}
+
         setData({
           wind: {
             value: model.windSpeed !== null && model.windSpeed !== undefined ? model.windSpeed : "-",
@@ -55,8 +72,8 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
             desc: "--",
           },
           uvIndex: {
-            value: "-", // Not available from SMHI obs API
-            desc: "--",
+            value: uvValue,
+            desc: uvDesc,
           },
           visibility: {
             value: visibilityValue,
