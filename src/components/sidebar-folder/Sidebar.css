@@ -58,7 +58,7 @@
 
 .nav-icon:hover,
 .nav-icon:hover {
-  background: var(--primary-grad);
+  background: var(--primary-grad-50);
   color: #fff;
 }
 
@@ -68,7 +68,7 @@
   transform: scale(1.06);
   box-shadow: none;
   border-radius: 12px;
-  outline: 1px solid rgba(255,255,255,0.06);
+  outline: 1px solid rgba(255, 255, 255, 0.06);
   border-color: var(--accent);
 }
 
