@@ -1,11 +1,9 @@
 import "./Header.css";
+import React, { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
-export default function Header({
-  theme,
-  setTheme,
-  searchQuery,
-  setSearchQuery,
-}) {
+export default function Header({ searchQuery, setSearchQuery }) {
+  const { theme, setTheme } = useContext(ThemeContext);
   const getFormattedDate = () => {
     const now = new Date();
     const options = { day: "2-digit", month: "short", year: "numeric" };
@@ -30,6 +28,7 @@ export default function Header({
           <button
             className="icon-btn theme-toggle"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label="Toggle theme"
           >
             {theme === "dark" ? "🌙" : "☀️"}
           </button>
