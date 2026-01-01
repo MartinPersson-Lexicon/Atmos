@@ -121,3 +121,66 @@
   font-weight: 600;
   color: #ffffff;
 }
+
+/* Light mode overrides */
+.theme-light .card4 {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e6e7ea;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+}
+
+.theme-light .cityRow {
+  background: #f8fafc;
+  color: #111827;
+    border: 1px solid #eef2f6;
+
+}
+
+.theme-light .cityRow__desc,
+.theme-light .cityRow__region {
+  color: #6b7280;
+}
+
+.theme-light .card4__list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Additional light-mode fixes for CityRow and Card4 header */
+.theme-light .card4__header {
+  color: #111827;
+}
+
+.theme-light .card4__title {
+  color: #111827;
+}
+
+.theme-light .card4__seeAll {
+  color: #6b7280;
+  background: transparent;
+}
+
+.theme-light .cityRow__city {
+  color: #111827;
+}
+
+.theme-light .cityRow__desc {
+  color: #6b7280;
+}
+
+.theme-light .cityRow__region {
+  color: #6b7280;
+}
+
+.theme-light .cityRow__icon {
+  color: #111827;
+}
+
+.theme-light .cityRow__temp {
+  color: #111827;
+}
+
+/* Make sure inner paddings and separators remain subtle */
+.theme-light .card4__list {
+  padding-right: 10px;
+}
