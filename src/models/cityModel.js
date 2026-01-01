@@ -7,11 +7,13 @@ const CityModel = {
 };
 export default CityModel;
 
+
 // List of SMHI weather stations in Sweden with temperature parameter (1)
 // Source: https://opendata.smhi.se/apidocs/metobs/station-list.html
 // Format: Name (station id)
 export const SMHI_CITIES = [
-  { name: "Abisko A", id: 25010, lat: null, lon: null },
+  // { name: "Abisko A", id: 25010, lat: null, lon: null },
+  { name: "Abisko A", id: 188790, lat: 68.3538, lon: 18.8164 },
   { name: "Falsterbo A", id: 52240, lat: 55.383698, lon: 12.8166 },
   { name: "Gotska Sandön A", id: 89230, lat: 58.393938, lon: 19.193992 },
   { name: "Gävle A", id: 107420, lat: 60.716082, lon: 17.160666 },
