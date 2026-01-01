@@ -5,6 +5,46 @@
   text-align: center;
 }
 
+:root {
+  --primary: #3a7bf6;
+  --accent: #ff7a59;
+  --primary-grad: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--accent) 100%
+  );
+  --bg: #0f1720;
+  --surface: #15161a;
+  --text: #e6e6ee;
+}
+
+.theme-light {
+  --bg: #f5f5f5;
+  --surface: #ffffff;
+  --text: #1a1a2e;
+}
+
+.theme-dark {
+  --bg: #0f1720;
+  --surface: #15161a;
+  --text: #e6e6ee;
+}
+
+/* apply tokens */
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-root > .header,
+.app-root .header {
+  background: var(--surface);
+}
+
+.app-footer {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.04));
+}
+
 /* App layout: sidebar left, content to the right */
 .app-layout {
   display: flex;
@@ -62,9 +102,9 @@ main {
 
 /* External link styling used across pages */
 .external-link {
-  color: #3a7bf6;
+  color: var(--primary);
   text-decoration: none;
-  border-bottom: 1px solid rgba(58,123,246,0.12);
+  border-bottom: 1px solid rgba(58, 123, 246, 0.12);
 }
 .external-link:hover {
   text-decoration: underline;
