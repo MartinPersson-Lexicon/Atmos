@@ -6,14 +6,9 @@ import ApiTest from "./pages/ApiTest";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import { Header, Footer, Sidebar } from "./components";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "./context/ThemeProvider";
 
-// import { useState } from 'react';
 function App() {
-  // const [theme, setTheme] = useState('dark');
-  // const [searchQuery, setSearchQuery] = useState('');
-  // const [activeNav, setActiveNav] = useState('dashboard')
-
   return (
     <ThemeProvider>
       <div className="app-root">
