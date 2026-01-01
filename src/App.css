@@ -60,6 +60,16 @@ main {
   z-index: 70;
 }
 
+/* External link styling used across pages */
+.external-link {
+  color: #3a7bf6;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(58,123,246,0.12);
+}
+.external-link:hover {
+  text-decoration: underline;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
