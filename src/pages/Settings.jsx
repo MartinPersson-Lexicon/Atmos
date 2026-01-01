@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { ThemeContext, DEFAULT_COLORS } from "../context/ThemeContext";
+import { ThemeContext } from "../context/ThemeContext";
+import { DEFAULT_COLORS } from "../utils/DefaultColors";
 
 export default function Settings() {
   const { theme, setTheme, colors, setColors } = useContext(ThemeContext);
@@ -35,7 +36,7 @@ export default function Settings() {
   return (
     <div className="settings-page">
       <h2>Settings</h2>
-      <h4>Selections will be saved automatically to local storage</h4>
+      <h4>Selections will be automatically saved to local storage</h4>
       <p>&nbsp;</p>
 
       <div
@@ -119,7 +120,12 @@ export default function Settings() {
                           width: 72,
                           height: 72,
                           borderRadius: 10,
+                          padding: 0,
+                          background: val,
+                          appearance: "none",
+                          WebkitAppearance: "none",
                           border: "3px solid var(--accent)",
+                          cursor: "pointer",
                         }}
                       />
                     ) : (
