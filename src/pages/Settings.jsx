@@ -251,7 +251,10 @@ export default function Settings() {
         {/* Reset all to default colors */}
         <div style={{ marginTop: 58 }}>
           <button
-            onClick={() => setColors(DEFAULT_COLORS)}
+            onClick={() => {
+              setColors(DEFAULT_COLORS);
+              setAlphaPct(50);
+            }}
             style={{
               padding: "8px 12px",
               borderRadius: 8,
