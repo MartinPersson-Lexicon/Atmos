@@ -35,8 +35,8 @@ export default function Settings() {
 
   return (
     <div className="settings-page">
-      <h2>Settings</h2>
-      <h4>Selections will be automatically saved to local storage</h4>
+      <h2 style={{ color: "var(--accent)" }}>Settings</h2>
+      <h4>Selections are automatically saved to local storage.</h4>
       <p>&nbsp;</p>
 
       <div
@@ -260,12 +260,67 @@ export default function Settings() {
               borderRadius: 8,
               border: "none",
               cursor: "pointer",
-              background: "var(--accent)",
+              background: "var(--primary)",
               color: "#fff",
             }}
           >
-            Reset to default colors
+            Reset all to default colors
           </button>
+        </div>
+      </section>
+      <section>
+        <div
+          style={{
+            marginTop: 38,
+            marginLeft: 56,
+            flexDirection: "row",
+            gap: 68,
+            display: "flex",
+            justifyContent: "start",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <label style={{ marginBottom: 12 }}>Grad Red/Yellow</label>
+            <div
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 10,
+                border: "6px solid var(--accent)",
+                background: "var(--primary-grad)",
+                cursor: "default",
+              }}
+            ></div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <label style={{ marginBottom: 12 }}>Grad Red50/Yellow50</label>
+            <div
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 10,
+                border: "6px solid var(--accent)",
+                background: "var(--primary-grad-50)",
+                cursor: "default",
+              }}
+            ></div>
+          </div>
         </div>
       </section>
     </div>
