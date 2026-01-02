@@ -16,8 +16,8 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
     humidity: { value: "-", desc: "--" },
     uvIndex: { value: "-", desc: "--" },
     visibility: { value: "-", time: "--" },
-    sunrise: "--",
-    sunset: "--",
+    sunrise: "07:55", // static example
+    sunset: "15:48",  // static example
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -83,8 +83,9 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
             value: visibilityValue,
             time: visibilityTime,
           },
-          sunrise: "--", // Not available from SMHI obs API
-          sunset: "--", // Not available from SMHI obs API
+          sunrise: "07:55", // static example
+          sunset: "15:48",  // static example
+          icon: model.symbolCodeIcon ?? "-",
         });
       } catch (err) {
         setError(err.message || String(err));
@@ -98,6 +99,8 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
   return (
     <div className="card-two">
       <h2 className="card-two__title">Today's Highlight</h2>
+      {/* Preserve space where icon was, but do not render icon */}
+      <div style={{ fontSize: 48, marginBottom: 8, textAlign: "center", height: 56 }}></div>
       {loading && <div style={{ color: "#aaa", fontSize: 13 }}>Loading…</div>}
       {error && <div style={{ color: "#c00", fontSize: 13 }}>Error: {error}</div>}
       <div className="card-two__grid">

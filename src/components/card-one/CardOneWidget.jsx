@@ -26,29 +26,17 @@ import { useEffect, useState } from "react";
 import weatherApi from "../../api/weatherApi";
 import { SMHI_CITY_MODELS } from "../../models/cityModel";
 
-// Card4 icon logic
-function iconFromWeatherCode(code, fallbackIcon = "❓") {
-  const n = Number(code);
-  if (!Number.isFinite(n)) return fallbackIcon;
-  if (n >= 90 && n <= 99) return "⛈️";
-  if (n >= 70 && n <= 79) return "🌨️";
-  if ((n >= 50 && n <= 69) || (n >= 80 && n <= 86)) return "🌧️";
-  if ((n >= 10 && n <= 19) || (n >= 40 && n <= 49)) return "🌫️";
-  if (n >= 4 && n <= 9) return "☁️";
-  if (n >= 0 && n <= 3) return "☀️";
-  return fallbackIcon;
-}
 
 // NOTE: only small change here: added onCityChange
 function CardOneWidget({ cityName = "Malmö", onCityChange }) {
   const [selectedCity, setSelectedCity] = useState(cityName);
   const [weatherData, setWeatherData] = useState({
     location: `${cityName}, Sweden`,
-    day: "Sunday",
-    date: "17 Dec, 2025",
-    temp: 28,
-    condition: "Heavy Rain",
-    icon: "🌧️",
+    day: "-",
+    date: "-",
+    temp: "-",
+    condition: "-",
+    icon: "-",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -86,9 +74,10 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
             })
           : "-",
         temp: model.temperature ?? "-",
-        condition: model.weatherText ?? "-",
-        icon:
-          model.symbolCodeIcon || iconFromWeatherCode(model.weatherCode, "🌧️"),
+        // Use only SmhiSymbolCodesText.js for condition text
+        condition: model.symbolCodeText ?? "-",
+        // Use only SmhiSymbolCodesEmoji.js for icon
+        icon: model.symbolCodeIcon ?? "-",
       });
       setLastUpdated(new Date());
     } catch (err) {
@@ -214,7 +203,7 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
         </div>
       </div>
       {lastUpdated && (
-        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 6 }}>
+        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 45 }}>
           Last update:{" "}
           {lastUpdated.toLocaleTimeString([], {
             hour: "2-digit",

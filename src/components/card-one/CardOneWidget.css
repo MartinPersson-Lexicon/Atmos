@@ -52,7 +52,7 @@
 }
 
 .weather-icon {
-  font-size: 80px;
+  font-size: 95px;
   margin: 10px 0;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .temperature .temp-main {
-  font-size: 64px;
+  font-size: 85px;
   font-weight: 700;
 }
 
@@ -82,3 +82,9 @@
   color: #8b8ba3;
   display: block;
 }
+
+.temperature {
+  text-align: right;
+  margin-top: 75px; 
+}
+
