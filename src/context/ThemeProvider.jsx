@@ -5,10 +5,10 @@ import { ThemeContext } from "./ThemeContext";
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try {
-      return localStorage.getItem("theme") || "light";
+      return localStorage.getItem("theme") || "dark";
     } catch (e) {
       console.log("Unable to get theme", e);
-      return "light";
+      return "dark";
     }
   });
 
