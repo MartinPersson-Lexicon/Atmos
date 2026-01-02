@@ -48,6 +48,7 @@ export default function About() {
       <p>&nbsp;</p>
       <h3>Special thanks:</h3>
       <h4>To Flaticon.com for some nice icons.</h4>
+      <h4>To Freepik.com for some nice background videos.</h4>
     </div>
   );
 }

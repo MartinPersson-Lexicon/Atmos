@@ -85,3 +85,22 @@
   color: rgba(255, 255, 255, 0.55);
   margin-top: 2px;
 }
+
+/* Light mode overrides */
+.theme-light .card-two {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e6e7ea;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+}
+
+.theme-light .card-two__item {
+  background: #f8fafc;
+  color: #111827;
+}
+
+.theme-light .card-two__label,
+.theme-light .card-two__unit,
+.theme-light .card-two__desc {
+  color: #6b7280;
+}
