@@ -8,23 +8,6 @@ import Card3Forecast from "../components/Card3Forecast/Card3Forecast";
 import { SMHI_CITY_MODELS } from "../models/cityModel";
 import { populateWeatherModelFromStationId } from "../api/weatherApi";
 
-// Ordered mapping for symbol codes -> video file (first match wins)
-const VIDEO_MAP = [
-  { codes: [1, 2], file: "sunny_palm_tree.mp4" },
-  { codes: [3, 4], file: "sunny_clouds.mp4" },
-  { codes: [5, 6, 7], file: "cloudy.mp4" },
-  { codes: [8, 9, 10, 11, 12, 13, 14, 18, 19, 20, 21], file: "raining.mp4" },
-  { codes: [15, 16, 17, 22, 23, 24, 25, 26, 27], file: "snowing.mp4" },
-];
-
-function pickVideoForCode(code) {
-  if (code == null) return null;
-  const n = Number(code);
-  for (const m of VIDEO_MAP) {
-    if (m.codes.includes(n)) return m.file;
-  }
-  return null;
-}
 
 export default function Home() {
   // Shared selected city for Card 1, Card 2 and Card 3
@@ -138,4 +121,22 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+// Ordered mapping for symbol codes -> video file (first match wins)
+const VIDEO_MAP = [
+  { codes: [1, 2], file: "sunny_palm_tree.mp4" },
+  { codes: [3, 4], file: "sunny_clouds.mp4" },
+  { codes: [5, 6, 7], file: "cloudy.mp4" },
+  { codes: [8, 9, 10, 11, 12, 13, 14, 18, 19, 20, 21], file: "raining.mp4" },
+  { codes: [15, 16, 17, 22, 23, 24, 25, 26, 27], file: "snowing.mp4" },
+];
+
+function pickVideoForCode(code) {
+  if (code == null) return null;
+  const n = Number(code);
+  for (const m of VIDEO_MAP) {
+    if (m.codes.includes(n)) return m.file;
+  }
+  return null;
 }
