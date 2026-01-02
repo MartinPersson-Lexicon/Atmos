@@ -88,3 +88,45 @@
   margin-top: 75px; 
 }
 
+
+/* Light mode overrides */
+.theme-light .weather-card {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e6e7ea;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+}
+
+.theme-light .location {
+  background-color: #f5f7fa;
+  color: #374151;
+}
+
+.theme-light .weather-info .date,
+.theme-light .weather-info .feels-like,
+.theme-light .temperature .temp-low {
+  color: #6b7280;
+}
+
+/* Force overrides for inline white colors in JSX (use sparingly) */
+.theme-light .location .location-icon {
+  color: #6b7280 !important;
+}
+
+.theme-light .location > span,
+.theme-light .location label span {
+  color: #111827 !important;
+}
+
+.theme-light .weather-card-header button {
+  color: rgba(17, 24, 39, 0.65) !important;
+}
+
+.theme-light .weather-icon {
+  font-size: 80px;
+  color: inherit !important;
+}
+
+.theme-light .city-dropdown-select option {
+  color: #111827;
+}
