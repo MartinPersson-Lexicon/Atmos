@@ -50,8 +50,8 @@ export default function Settings() {
         }}
       >
         <h3>Color Theming</h3>
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <label>
+        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+          <label style={{ gap: 8 , display: "flex", alignItems: "center" }}>
             <input
               type="radio"
               name="theme"
@@ -60,7 +60,7 @@ export default function Settings() {
             />
             Light
           </label>
-          <label>
+          <label style={{ gap: 8 , display: "flex", alignItems: "center" }}>
             <input
               type="radio"
               name="theme"
@@ -73,7 +73,7 @@ export default function Settings() {
       </div>
 
       <section style={{ marginTop: 20 }}>
-        <h3>Base Colors</h3>
+        <h3>Editable Colors (click)</h3>
         <div
           style={{
             display: "grid",
@@ -146,7 +146,7 @@ export default function Settings() {
               );
             })}
         </div>
-        <h3>Base Colors with transparency</h3>
+        <h3>Colors with transparency</h3>
         {/* Row 2: transparency slider (sets alpha for all five colors) */}
         <div
           style={{

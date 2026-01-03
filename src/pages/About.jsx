@@ -46,9 +46,10 @@ export default function About() {
       <h3>Card4: All cities latest-hour weather data </h3>
       <p>&nbsp;</p>
       <p>&nbsp;</p>
-      <h3>Special thanks:</h3>
-      <h4>To Flaticon.com for some nice icons.</h4>
-      <h4>To Freepik.com for some nice background videos.</h4>
+      <h3>Special thanks to:</h3>
+      <h4>SMHI Open Data for weather data.</h4>
+      <h4>Flaticon.com for some nice icons.</h4>
+      <h4>Freepik.com for some nice background videos.</h4>
     </div>
   );
 }
