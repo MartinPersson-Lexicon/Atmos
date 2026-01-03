@@ -1,10 +1,10 @@
 import "./Header.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Header({ searchQuery, setSearchQuery }) {
   // const { theme, setTheme } = useContext(ThemeContext);
-  const getFormattedDate = () => {
-    const now = new Date();
+  const getFormattedDate = (date = new Date()) => {
+    const now = date;
     const options = {
       weekday: "long",
       day: "2-digit",
@@ -15,6 +15,13 @@ export default function Header({ searchQuery, setSearchQuery }) {
     };
     return now.toLocaleDateString("en-GB", options);
   };
+
+  const [nowDate, setNowDate] = useState(new Date());
+
+  useEffect(() => {
+    const id = setInterval(() => setNowDate(new Date()), 5000);
+    return () => clearInterval(id);
+  }, []);
 
   // draw video into canvas clipped to the logo text
   useEffect(() => {
@@ -79,7 +86,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
 
   return (
     <header className="header">
-      <p className="date">{getFormattedDate()}</p>
+      <p className="date">{getFormattedDate(nowDate)}</p>
       <div className="header-logo" aria-hidden="true">
         <video
           id="header-logo-video"
