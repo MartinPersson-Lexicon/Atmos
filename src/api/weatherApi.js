@@ -268,4 +268,5 @@ export default {
   populateWeatherModelFromStationId,
   fetchWeaterForAllStrationIds,
   fetchStationsForParameter,
+  getUvIndexForStation,
 };
