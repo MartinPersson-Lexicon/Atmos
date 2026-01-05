@@ -20,8 +20,8 @@ function getDayLabel(index, isoDate) {
 
   const d = new Date(isoDate);
   if (Number.isNaN(d.getTime())) return isoDate;
-  // Example output: Mon, Tue, Wed
-  return d.toLocaleDateString(undefined, { weekday: "short" });
+  // Always use English for weekday
+  return d.toLocaleDateString("en", { weekday: "short" });
 }
 
 // This is my Card 3 component that shows a 10-day forecast in 2 rows (5+5)
