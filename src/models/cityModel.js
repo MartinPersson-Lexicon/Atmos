@@ -24,7 +24,7 @@ export const SMHI_CITIES = [
   { name: "Katterjåkk A", id: 188850, lat: 68.420182, lon: 18.168044 },
   { name: "Kiruna", id: 25080, lat: 67.85654, lon: 20.29367 },
   { name: "Ljungby A", id: 63510, lat: 56.852482, lon: 13.879433 },
-  { name: "Lund", id: 53430, lat: 55.693194, lon: 13.225057 },
+  // { name: "Lund", id: 53430, lat: 55.693194, lon: 13.225057 },
   { name: "Malmö A", id: 52350, lat: 55.571456, lon: 13.070773 },
   { name: "Nikkaluokta A", id: 179960, lat: 67.852698, lon: 19.02199 },
   { name: "Ronneby-Bredåkra", id: 65160, lat: 56.267, lon: 15.265 },
