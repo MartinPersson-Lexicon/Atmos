@@ -61,3 +61,7 @@
 .homeRight {
   margin-top: 24px;
 }
+/* Card 1: disable inner scroll completely */
+.dashboard-cell--card1 > * {
+  overflow: hidden;
+}
