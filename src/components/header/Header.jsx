@@ -87,7 +87,9 @@ export default function Header({ selectedCity, setSelectedCity, cityOptions }) {
   const [inputValue, setInputValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const filteredOptions = cityOptions.filter((city) =>
-    inputValue === "" ? true : city.toLowerCase().includes(inputValue.toLowerCase())
+    inputValue === ""
+      ? true
+      : city.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   return (
@@ -96,7 +98,7 @@ export default function Header({ selectedCity, setSelectedCity, cityOptions }) {
       <div className="header-logo" aria-hidden="true">
         <video
           id="header-logo-video"
-          src="/videos/flames.mp4"
+          src={`${import.meta.env.BASE_URL}videos/flames.mp4`}
           muted
           loop
           playsInline
@@ -121,27 +123,33 @@ export default function Header({ selectedCity, setSelectedCity, cityOptions }) {
             style={{ zIndex: 2 }}
           />
           {showDropdown && filteredOptions.length > 0 && (
-            <ul style={{
-              position: "absolute",
-              top: "100%",
-              left: 0,
-              width: "100%",
-              minWidth: 0,
-              background: "var(--surface)",
-              border: "1px solid var(--muted-border)",
-              borderRadius: 8,
-              maxHeight: 140,
-              overflowY: "auto",
-              zIndex: 10,
-              listStyle: "none",
-              margin: 0,
-              padding: 0,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-            }}>
+            <ul
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                width: "100%",
+                minWidth: 0,
+                background: "var(--surface)",
+                border: "1px solid var(--muted-border)",
+                borderRadius: 8,
+                maxHeight: 140,
+                overflowY: "auto",
+                zIndex: 10,
+                listStyle: "none",
+                margin: 0,
+                padding: 0,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              }}
+            >
               {filteredOptions.map((city) => (
                 <li
                   key={city}
-                  style={{ padding: "8px 12px", cursor: "pointer", fontSize: 15 }}
+                  style={{
+                    padding: "8px 12px",
+                    cursor: "pointer",
+                    fontSize: 15,
+                  }}
                   onMouseDown={() => {
                     setSelectedCity(city);
                     setInputValue(""); // Clear input after selection

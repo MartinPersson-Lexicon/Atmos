@@ -58,7 +58,7 @@ export default function Home({ selectedCity, setSelectedCity }) {
     if (!vid) return;
     const file = pickVideoForCode(symbolCode);
     const chosen = file || "flames.mp4";
-    const src = `/videos/${chosen}`;
+    const src = `${import.meta.env.BASE_URL}videos/${chosen}`;
     if (vid.getAttribute("src") !== src) {
       vid.style.display = "block";
       vid.src = src;
