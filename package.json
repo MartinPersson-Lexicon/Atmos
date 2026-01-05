@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "homepage": "https://martinpersson-lexicon.github.io/atmos",
+  "homepage": "https://martinpersson-lexicon.github.io/atmos/",
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
