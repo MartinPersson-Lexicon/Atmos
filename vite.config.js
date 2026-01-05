@@ -1,3 +1,4 @@
+/* eslint-env node */
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
@@ -9,21 +10,24 @@ import path from "path";
 // 2. `homepage` field in package.json (if provided) -> uses its pathname
 // 3. fallback to '/'
 function resolveBase() {
-  if (process.env.VITE_GH_PAGES_BASE) return process.env.VITE_GH_PAGES_BASE;
+  const ghPagesEnv = globalThis.process?.env?.VITE_GH_PAGES_BASE;
+  if (ghPagesEnv) return ghPagesEnv;
 
   // Try env provided by npm scripts
-  if (process.env.npm_package_homepage) {
+  const npmHomepageEnv = globalThis.process?.env?.npm_package_homepage;
+  if (npmHomepageEnv) {
     try {
-      const u = new URL(process.env.npm_package_homepage);
+      const u = new URL(npmHomepageEnv);
       return u.pathname.endsWith("/") ? u.pathname : `${u.pathname}/`;
     } catch {
-      return process.env.npm_package_homepage;
+      return npmHomepageEnv;
     }
   }
 
   // Fallback: read package.json directly (more reliable in some CI environments)
   try {
-    const pkgPath = path.resolve(process.cwd(), "package.json");
+    const cwd = globalThis.process?.cwd?.() ?? ".";
+    const pkgPath = path.resolve(cwd, "package.json");
     const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
     if (pkg && pkg.homepage) {
       try {
