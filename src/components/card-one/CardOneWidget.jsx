@@ -110,7 +110,7 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
           <span className="location-icon">📍</span>
           <span
             style={{
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: 600,
               color: "#fff",
               lineHeight: 1,
