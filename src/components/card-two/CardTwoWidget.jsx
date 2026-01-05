@@ -131,7 +131,7 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
         {/* Bottom Row */}
         <div className="card-two__item">
           <div className="card-two__label">UV Index</div>
-          <div className="card-two__value">{data.uvIndex.value} <span className="card-two__unit">uv</span></div>
+          <div className="card-two__value">{data.uvIndex.value} <span className="card-two__unit">mW/m²</span></div>
           <div className="card-two__desc">{data.uvIndex.desc}</div>
         </div>
         <div className="card-two__item">
