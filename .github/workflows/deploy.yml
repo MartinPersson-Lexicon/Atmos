@@ -1,7 +1,7 @@
-name: Build and deploy to GitHub Pages
-
 permissions:
   contents: write
+
+name: Build and deploy to GitHub Pages
   
 on:
   push:
