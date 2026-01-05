@@ -17,6 +17,7 @@ export default function Settings() {
     return hexToPct(colors.primary50 || DEFAULT_COLORS.primary50);
   });
 
+  
   const withAlphaHex = (hex, alpha) => {
     if (!hex) return "#00000000";
     const h = hex.replace("#", "");
@@ -51,7 +52,7 @@ export default function Settings() {
       >
         <h3>Color Theming</h3>
         <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-          <label style={{ gap: 8 , display: "flex", alignItems: "center" }}>
+          <label style={{ gap: 8, display: "flex", alignItems: "center" }}>
             <input
               type="radio"
               name="theme"
@@ -60,7 +61,7 @@ export default function Settings() {
             />
             Light
           </label>
-          <label style={{ gap: 8 , display: "flex", alignItems: "center" }}>
+          <label style={{ gap: 8, display: "flex", alignItems: "center" }}>
             <input
               type="radio"
               name="theme"
