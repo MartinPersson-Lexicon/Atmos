@@ -98,7 +98,7 @@ export default function Header({ selectedCity, setSelectedCity, cityOptions }) {
       <div className="header-logo" aria-hidden="true">
         <video
           id="header-logo-video"
-          src={`${import.meta.env.BASE_URL}videos/flames.mp4`}
+          src="/videos/flames.mp4"
           muted
           loop
           playsInline
