@@ -4,38 +4,60 @@
   box-sizing: border-box;
 }
 
-/* 2x2 grid: 
-   Row 1: Card 1 | Card 2
-   Row 2: Card 4 | Card 3
+/* 2x2 grid on wide screens:
+   - Fits into viewport (no page scroll)
+   - Cards stretch evenly
 */
 .dashboard-main {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: 24px;
   align-items: stretch;
+
+  /* IMPORTANT: make the 2x2 grid fit the visible screen */
+  height: calc(100dvh - 200px);
+
+  /* CRITICAL for grid children to shrink correctly */
+  min-height: 0;
+
+  /* prevent page scroll caused by grid overflow */
+  overflow: hidden;
 }
 
 /* Each grid cell wraps exactly one card */
 .dashboard-cell {
   display: flex;
+  height: 100%;
+  min-height: 0;
 }
 
-/* Make the card fill the whole cell width */
+/* Make the card fill the whole cell */
 .dashboard-cell > * {
   width: 100%;
+  height: 100%;
+  min-height: 0;
+
+  /* If a card has too much content, scroll INSIDE the card */
+  overflow: auto;
 }
 
-/* Optional: if you want different behavior on small screens,
-   you can stack the cards in one column */
+/* Small screens: stack cards in one column */
 @media (max-width: 900px) {
+  .dashboard {
+    padding: 16px 16px;
+  }
+
   .dashboard-main {
     grid-template-columns: 1fr;
-    grid-auto-rows: auto;
+    grid-template-rows: none;
+    grid-auto-rows: minmax(280px, auto);
+    height: auto; /* allow normal page scroll on mobile */
+    overflow: visible; /* no clipping */
   }
 }
 
-/* Keep homeRight block (if used somewhere else) */
+/* Keep homeRight block */
 .homeRight {
   margin-top: 24px;
 }

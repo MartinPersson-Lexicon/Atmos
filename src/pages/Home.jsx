@@ -8,19 +8,25 @@ import Card3Forecast from "../components/Card3Forecast/Card3Forecast";
 import { SMHI_CITY_MODELS } from "../models/cityModel";
 import { populateWeatherModelFromStationId } from "../api/weatherApi";
 
-
 export default function Home({ selectedCity, setSelectedCity }) {
-
-  // Current time string used in Card 2 props (HH:mm)
   const now = new Date();
   const pad = (n) => n.toString().padStart(2, "0");
-  const hours = pad(now.getHours());
-  const minutes = pad(now.getMinutes());
-  const timeString = `${hours}:${minutes}`;
+  const timeString = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
   const videoRef = useRef(null);
   const [symbolCode, setSymbolCode] = useState(null);
 
-  // Whenever selected city changes, fetch a small weather model to get symbolCode
+  // Responsive breakpoint
+  const [isNarrow, setIsNarrow] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 900 : false
+  );
+
+  useEffect(() => {
+    const onResize = () => setIsNarrow(window.innerWidth < 900);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   useEffect(() => {
     let mounted = true;
     async function load() {
@@ -47,28 +53,53 @@ export default function Home({ selectedCity, setSelectedCity }) {
     };
   }, [selectedCity]);
 
-  // When symbolCode changes, update video source
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
     const file = pickVideoForCode(symbolCode);
-    // Use a fallback video when no mapping exists or symbol fetch failed
     const chosen = file || "flames.mp4";
-    // Expect videos to be placed in public/videos/
     const src = `/videos/${chosen}`;
     if (vid.getAttribute("src") !== src) {
       vid.style.display = "block";
       vid.src = src;
       vid.load();
-      // attempt to play; browsers may block autoplay if not muted — video is muted
       const p = vid.play();
       if (p && typeof p.catch === "function") p.catch(() => {});
     }
   }, [symbolCode]);
 
+  // Grid cell style
+  const cellStyle = {
+    height: "100%",
+    minHeight: 0,
+    overflow: "auto",
+  };
+
+  // Layout styles: 2x2 on wide screens, 1 column on narrow screens
+  const gridStyle = isNarrow
+    ? {
+        display: "grid",
+        gridTemplateColumns: "1fr",
+        gridAutoRows: "minmax(280px, auto)",
+        gap: "20px",
+        // On narrow screens, allow page scroll naturally
+        height: "auto",
+        minHeight: 0,
+        overflow: "visible",
+      }
+    : {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gridTemplateRows: "1fr 1fr",
+        gap: "24px",
+        height: "calc(100dvh - 200px)",
+        minHeight: 0,
+        overflow: "hidden",
+        alignItems: "stretch",
+      };
+
   return (
     <>
-      {/* Background video for Home page; videos should live in public/videos/ */}
       <video
         ref={videoRef}
         id="home-bg-video"
@@ -79,18 +110,23 @@ export default function Home({ selectedCity, setSelectedCity }) {
         style={{ display: "none" }}
         aria-hidden="true"
       />
+
       <div className="dashboard">
-        <div className="dashboard-main">
-          {/* Row 1 – left: Card 1 */}
-          <div className="dashboard-cell dashboard-cell--card1">
+        <div className="dashboard-main" style={gridStyle}>
+          <div
+            className="dashboard-cell dashboard-cell--card1"
+            style={cellStyle}
+          >
             <CardOneWidget
               cityName={selectedCity}
               onCityChange={setSelectedCity}
             />
           </div>
 
-          {/* Row 1 – right: Card 2 */}
-          <div className="dashboard-cell dashboard-cell--card2">
+          <div
+            className="dashboard-cell dashboard-cell--card2"
+            style={cellStyle}
+          >
             <CardTwoWidget
               cityName={selectedCity}
               wind={{ value: 3.9, unit: "m/s", time: timeString }}
@@ -102,26 +138,27 @@ export default function Home({ selectedCity, setSelectedCity }) {
             />
           </div>
 
-          {/* Row 2 – left: Card 4 (Other Cities) */}
-          <div className="dashboard-cell dashboard-cell--card4">
+          <div
+            className="dashboard-cell dashboard-cell--card4"
+            style={cellStyle}
+          >
             <Card4OtherCities />
           </div>
 
-          {/* Row 2 – right: Card 3 (10 Day Forecast) */}
-          <div className="dashboard-cell dashboard-cell--card3">
+          <div
+            className="dashboard-cell dashboard-cell--card3"
+            style={cellStyle}
+          >
             <Card3Forecast cityName={selectedCity} />
           </div>
         </div>
       </div>
 
-      <div className="homeRight">
-        {/* Right side is empty for now (other cards will go here later) */}
-      </div>
+      <div className="homeRight" />
     </>
   );
 }
 
-// Ordered mapping for symbol codes -> video file (first match wins)
 const VIDEO_MAP = [
   { codes: [1, 2], file: "sunny_palm_tree.mp4" },
   { codes: [3, 4], file: "sunny_clouds.mp4" },
