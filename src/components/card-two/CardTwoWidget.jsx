@@ -98,7 +98,14 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
 
   return (
     <div className="card-two">
-      <h2 className="card-two__title">Today's Highlight</h2>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: 18 }}>
+        <h2 className="card-two__title" style={{ margin: 0 }}>
+          Today's Highlight
+        </h2>
+        <span className="card-two__city" style={{ marginLeft: 12 }}>
+          — {cityName}
+        </span>
+      </div>
       {/* Preserve space where icon was, but do not render icon */}
       <div style={{ fontSize: 48, marginBottom: 8, textAlign: "center", height: 56 }}></div>
       {loading && <div style={{ color: "#aaa", fontSize: 13 }}>Loading…</div>}
