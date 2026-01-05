@@ -26,7 +26,6 @@ import { useEffect, useState } from "react";
 import weatherApi from "../../api/weatherApi";
 import { SMHI_CITY_MODELS } from "../../models/cityModel";
 
-
 // NOTE: only small change here: added onCityChange
 function CardOneWidget({ cityName = "Malmö", onCityChange }) {
   const [selectedCity, setSelectedCity] = useState(cityName);
@@ -203,7 +202,7 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
         </div>
       </div>
       {lastUpdated && (
-        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 55 }}>
+        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 10 }}>
           Last update:{" "}
           {lastUpdated.toLocaleTimeString([], {
             hour: "2-digit",
