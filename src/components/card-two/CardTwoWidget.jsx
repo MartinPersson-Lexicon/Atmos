@@ -98,7 +98,7 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
 
   return (
     <div className="card-two">
-      <div style={{ display: "flex", alignItems: "center", marginBottom: 18 }}>
+      <div style={{ display: "flex", alignItems: "center"}}>
         <h2 className="card-two__title" style={{ margin: 0 }}>
           Today's Highlight
         </h2>
