@@ -9,9 +9,7 @@ import { SMHI_CITY_MODELS } from "../models/cityModel";
 import { populateWeatherModelFromStationId } from "../api/weatherApi";
 
 
-export default function Home() {
-  // Shared selected city for Card 1, Card 2 and Card 3
-  const [selectedCity, setSelectedCity] = useState("Malmö");
+export default function Home({ selectedCity, setSelectedCity }) {
 
   // Current time string used in Card 2 props (HH:mm)
   const now = new Date();

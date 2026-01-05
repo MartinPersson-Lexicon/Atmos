@@ -203,7 +203,7 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
         </div>
       </div>
       {lastUpdated && (
-        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 45 }}>
+        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 55 }}>
           Last update:{" "}
           {lastUpdated.toLocaleTimeString([], {
             hour: "2-digit",

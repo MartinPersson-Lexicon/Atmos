@@ -1,7 +1,7 @@
 import "./Header.css";
 import { useEffect, useState } from "react";
 
-export default function Header({ searchQuery, setSearchQuery }) {
+export default function Header({ selectedCity, setSelectedCity, cityOptions }) {
   // const { theme, setTheme } = useContext(ThemeContext);
   const getFormattedDate = (date = new Date()) => {
     const now = date;
@@ -84,6 +84,12 @@ export default function Header({ searchQuery, setSearchQuery }) {
     };
   }, []);
 
+  const [inputValue, setInputValue] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const filteredOptions = cityOptions.filter((city) =>
+    inputValue === "" ? true : city.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
   return (
     <header className="header">
       <p className="date">{getFormattedDate(nowDate)}</p>
@@ -100,25 +106,54 @@ export default function Header({ searchQuery, setSearchQuery }) {
         <canvas id="header-logo-canvas" />
       </div>
       <div className="header-right">
-        <div className="search-bar">
+        <div className="search-bar" style={{ position: "relative" }}>
           <span className="search-icon">🔍</span>
           <input
             type="text"
             placeholder="Search your location"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+              setShowDropdown(true);
+            }}
+            onFocus={() => setShowDropdown(true)}
+            onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+            style={{ zIndex: 2 }}
           />
+          {showDropdown && filteredOptions.length > 0 && (
+            <ul style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              width: "100%",
+              minWidth: 0,
+              background: "var(--surface)",
+              border: "1px solid var(--muted-border)",
+              borderRadius: 8,
+              maxHeight: 140,
+              overflowY: "auto",
+              zIndex: 10,
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            }}>
+              {filteredOptions.map((city) => (
+                <li
+                  key={city}
+                  style={{ padding: "8px 12px", cursor: "pointer", fontSize: 15 }}
+                  onMouseDown={() => {
+                    setSelectedCity(city);
+                    setInputValue(""); // Clear input after selection
+                    setShowDropdown(false);
+                  }}
+                >
+                  {city}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-
-        {/* <div className="header-actions">
-          <button
-            className="icon-btn theme-toggle"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? "🌙" : "☀️"}
-          </button>
-        </div> */}
       </div>
     </header>
   );
