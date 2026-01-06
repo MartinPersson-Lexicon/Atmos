@@ -1,7 +1,7 @@
 import "./Header.css";
 import { useEffect, useState } from "react";
 
-export default function Header({ selectedCity, setSelectedCity, cityOptions }) {
+export default function Header({ setSelectedCity, cityOptions }) {
   // const { theme, setTheme } = useContext(ThemeContext);
   const getFormattedDate = (date = new Date()) => {
     const now = date;
