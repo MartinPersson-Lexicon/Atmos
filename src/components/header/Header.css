@@ -11,11 +11,6 @@
   position: relative;
 }
 
-/* Ensure header spans full width and items stay in a row */
-.header {
-  width: 100%;
-  gap: 20px;
-}
 .header-logo {
   font-size: 58px;
   font-weight: 900;
@@ -45,30 +40,55 @@
   justify-content: flex-end;
 }
 
-/* Make the right side take available space and keep children aligned to the right */
-.header-right {
-  flex: 1 1 auto;
-  justify-content: flex-end;
-}
-
-/* Responsive: stack header elements on very small screens */
-@media (max-width: 520px) {
+/* Responsive: place date full-width and logo + right on same row */
+@media (max-width: 800px) {
   .header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    height: auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "date date"
+      "logo right";
+    /* align-items: center; */
+    justify-content: center;
+    gap: 4px 4px;
+    padding: 8px 12px;
   }
-  .header-right {
-    justify-content: space-between;
+
+  .date {
+    grid-area: date;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
   }
+
   .header-logo {
+    grid-area: logo;
     position: static;
     transform: none;
-    margin: 0 auto;
-    text-align: center;
-    font-size: 28px;
+    margin: 0;
+    text-align: left;
+    font-size: 1.8rem;
     font-weight: 800;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .header-right {
+    grid-area: right;
+    display: flex;
+    position: static;
+    margin: 0;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .header-logo canvas {
+    height: 100%;
+    width: auto;
+    display: block;
   }
 }
 
