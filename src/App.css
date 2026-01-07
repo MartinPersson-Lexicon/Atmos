@@ -74,7 +74,7 @@ body {
   display: flex;
   flex-direction: column;
   /* reserve space under the fixed header so content doesn't appear beneath it */
-  padding: calc(70px + 1rem) 2rem calc(56px + 1rem);
+  padding: calc(50px + 1rem) 2rem calc(56px + 1rem);
 }
 
 main {
