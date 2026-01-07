@@ -202,7 +202,7 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
         </div>
       </div>
       {lastUpdated && (
-        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 10 }}>
+        <div className="weather-card__last-update">
           Last update:{" "}
           {lastUpdated.toLocaleTimeString([], {
             hour: "2-digit",

@@ -115,12 +115,12 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
         <div className="card-two__item">
           <div className="card-two__label">Wind Status</div>
           <div className="card-two__value">{data.wind.value} <span className="card-two__unit">{data.wind.unit}</span></div>
-          <div className="card-two__desc">Updated {data.wind.time}</div>
+
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Humidity</div>
           <div className="card-two__value">{data.humidity.value} <span className="card-two__unit">%</span></div>
-          <div className="card-two__desc">{data.humidity.desc}</div>
+
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Sunrise</div>
@@ -132,12 +132,12 @@ const CardTwoWidget = ({ cityName = "Malmö" }) => {
         <div className="card-two__item">
           <div className="card-two__label">UV Index</div>
           <div className="card-two__value">{data.uvIndex.value} <span className="card-two__unit">mW/m²</span></div>
-          <div className="card-two__desc">{data.uvIndex.desc}</div>
+
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Visibility</div>
           <div className="card-two__value">{data.visibility.value} <span className="card-two__unit">km</span></div>
-          <div className="card-two__desc">Updated {data.visibility.time}</div>
+
         </div>
         <div className="card-two__item">
           <div className="card-two__label">Sunset</div>
