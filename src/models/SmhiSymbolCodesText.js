@@ -3,7 +3,7 @@ const SMHI_SYMBOL_CODES_TEXT = {
   1: "Clear sky",
   2: "Nearly clear sky",
   3: "Variable cloudiness",
-  4: "Halfclear sky",
+  4: "Half clear sky",
   5: "Cloudy sky",
   6: "Overcast",
   7: "Fog",
