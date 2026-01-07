@@ -1,4 +1,4 @@
-/* ===== CARD 4 (TYPOGRAPHY MATCH) ===== */
+/* ===== CARD 4 (TYPOGRAPHY MATCH + ALIGN WITH CARD 3) ===== */
 
 .card4 {
   background: #1b1d1f;
@@ -13,6 +13,9 @@
   /* Font style like the design */
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
     sans-serif;
+
+  /* IMPORTANT: prevent weird extra scrollbars */
+  overflow: hidden;
 }
 
 /* Header */
@@ -20,7 +23,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
+  gap: 12px;
+
+  /* IMPORTANT: remove extra vertical space so list starts at same level as Card 3 */
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .card4__title {
@@ -28,6 +35,21 @@
   font-size: 22px; /* matches design */
   font-weight: 600;
   letter-spacing: 0.2px;
+  line-height: 1.1;
+
+  /* IMPORTANT: keep "Other Cities — Last update" on ONE line like Card 3 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The small grey "— Last update: 11:08" part (match Card3 "— Malmö") */
+.card4__meta {
+  font-weight: 500;
+  font-size: 14px; /* same “small subtitle” feel as Card 3 */
+  opacity: 0.6;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .card4__seeAll {
@@ -39,6 +61,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0; /* keep button visible */
 }
 
 /* Scroll area */
@@ -46,18 +69,32 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 24px;   /* ← THIS is the alignment fix */
   max-height: 340px;
   overflow-y: auto;
   padding-right: 10px;
 }
 
-/* Scrollbar */
-.card4__list::-webkit-scrollbar {
-  width: 8px;
+  /* IMPORTANT: align first city row with Card 3 first row */
+  margin-top: 12px; /* tune: 8–14 depending on your Card3 spacing */
+  padding-top: 0;
+
+  max-height: 340px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Remove right padding that pushes content + makes scrollbar feel big */
+  padding-right: 0;
+
+  /* Hide scrollbar but keep scroll */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/old Edge */
 }
-.card4__list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
+
+/* Hide scrollbar (Chrome/Safari) */
+.card4__list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* ===== CITY ROW ===== */
@@ -131,8 +168,7 @@
 .theme-light .cityRow {
   background: #f8fafc;
   color: #111827;
-    border: 1px solid #eef2f6;
-
+  border: 1px solid #eef2f6;
 }
 
 .theme-light .cityRow__desc,
@@ -140,16 +176,17 @@
   color: #6b7280;
 }
 
-.theme-light .card4__list::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.12);
-}
-
-/* Additional light-mode fixes for CityRow and Card4 header */
+/* Header in light mode */
 .theme-light .card4__header {
   color: #111827;
 }
 
 .theme-light .card4__title {
+  color: #111827;
+}
+
+.theme-light .card4__meta {
+  opacity: 0.6;
   color: #111827;
 }
 
@@ -176,9 +213,4 @@
 
 .theme-light .cityRow__temp {
   color: #111827;
-}
-
-/* Make sure inner paddings and separators remain subtle */
-.theme-light .card4__list {
-  padding-right: 10px;
 }

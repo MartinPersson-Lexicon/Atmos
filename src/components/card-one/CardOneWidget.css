@@ -46,7 +46,7 @@
 }
 
 .weather-info h2.day {
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 600;
   margin: 0 0 5px 0;
 }
@@ -58,8 +58,8 @@
 }
 
 .weather-icon {
-  font-size: 95px;
-  margin: 10px 0;
+  font-size: 75px;
+  margin: 0 0 5px 0;
 }
 
 .weather-info .condition {
@@ -79,7 +79,7 @@
 }
 
 .temperature .temp-main {
-  font-size: 85px;
+  font-size: 75px;
   font-weight: 700;
 }
 
@@ -91,7 +91,7 @@
 
 .temperature {
   text-align: right;
-  margin-top: 75px; 
+  margin-top: 40px;
 }
 
 

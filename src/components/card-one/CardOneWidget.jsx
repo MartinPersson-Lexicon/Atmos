@@ -195,21 +195,19 @@ function CardOneWidget({ cityName = "Malmö", onCityChange }) {
           <p className="date">{weatherData.date}</p>
           <div className="weather-icon">{weatherData.icon}</div>
           <p className="condition">{weatherData.condition}</p>
+          {lastUpdated && (
+            <div className="weather-card__last-update" style={{ position: "static", left: "unset", bottom: "unset", marginTop: 4 }}>
+              Last update: {lastUpdated.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </div>
+          )}
         </div>
-
         <div className="temperature">
           <span className="temp-main">{weatherData.temp}°C</span>
         </div>
       </div>
-      {lastUpdated && (
-        <div className="weather-card__last-update">
-          Last update:{" "}
-          {lastUpdated.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </div>
-      )}
       {error && (
         <div style={{ color: "#c00", marginTop: 8 }}>Error: {error}</div>
       )}

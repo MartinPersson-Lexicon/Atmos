@@ -16,20 +16,16 @@ const PRIORITY_CITY_KEYS = [
 // Build the full city list from the shared city model
 const allCitiesFromModel = SMHI_CITY_MODELS.map((c) => ({
   region: "Sweden",
-  city: c.city, // e.g. "Malmö", "Lund", "Göteborg", "Abisko", etc.
+  city: c.city,
   desc: "",
   stationId: c.stationId,
-  // Fallback icon in case symbolCodeIcon is not available
   icon: "☁️",
 }));
 
 // Helper to decide priority order
 function priorityIndexForCityName(cityName) {
   const lower = String(cityName).toLowerCase();
-
   const idx = PRIORITY_CITY_KEYS.findIndex((key) => lower.startsWith(key));
-
-  // If city is not one of the priority ones, place it after them
   return idx === -1 ? PRIORITY_CITY_KEYS.length : idx;
 }
 
@@ -113,9 +109,7 @@ export default function Card4OtherCities() {
             const icon =
               modelHour?.symbolCodeIcon || modelDay?.symbolCodeIcon || c.icon;
 
-            // Weather description:
-            // 1. Prefer symbolCodeText (from SmhiSymbolCodesText)
-            // 2. Fallback to weatherText (from SMHI_CODES_EN)
+            // Weather description text
             const desc =
               modelHour?.symbolCodeText ||
               modelHour?.weatherText ||
@@ -123,13 +117,7 @@ export default function Card4OtherCities() {
               modelDay?.weatherText ||
               "";
 
-            return {
-              ...c,
-              temp,
-              icon,
-              // Only description text; no "SMHI" label
-              desc,
-            };
+            return { ...c, temp, icon, desc };
           } catch (error) {
             console.error(
               "Failed to load weather for station",
@@ -138,7 +126,6 @@ export default function Card4OtherCities() {
             );
 
             const fallbackTemp = c.city === "Abisko" ? -5 : null;
-
             return { ...c, temp: fallbackTemp, icon: c.icon, desc: "" };
           }
         })
@@ -147,9 +134,7 @@ export default function Card4OtherCities() {
       const updated = baseCities.map((c, i) => {
         const r = results[i];
 
-        if (r.status === "fulfilled") {
-          return r.value;
-        }
+        if (r.status === "fulfilled") return r.value;
 
         const fallbackTemp = c.city === "Abisko" ? -5 : null;
         return { ...c, temp: fallbackTemp };
@@ -160,9 +145,7 @@ export default function Card4OtherCities() {
         setLastUpdated(new Date());
       }
     } finally {
-      if (mountedRef.current) {
-        setUpdating(false);
-      }
+      if (mountedRef.current) setUpdating(false);
       inFlightRef.current = false;
     }
   }, []);
@@ -182,7 +165,6 @@ export default function Card4OtherCities() {
   }, [loadTemps]);
 
   // --- Pull to refresh (mobile touch) ---
-
   const handleTouchStart = (e) => {
     if (!listRef.current) return;
     if (listRef.current.scrollTop !== 0) return;
@@ -198,18 +180,14 @@ export default function Card4OtherCities() {
     const touch = e.touches[0];
     const deltaY = touch.clientY - touchStartYRef.current;
 
-    if (deltaY > 0) {
-      pullDistanceRef.current = deltaY;
-    }
+    if (deltaY > 0) pullDistanceRef.current = deltaY;
   };
 
   const handleTouchEnd = () => {
     if (touchStartYRef.current == null) return;
 
     // If the user pulled down more than ~60px from the top, trigger refresh
-    if (pullDistanceRef.current > 60) {
-      loadTemps();
-    }
+    if (pullDistanceRef.current > 60) loadTemps();
 
     touchStartYRef.current = null;
     pullDistanceRef.current = 0;
@@ -218,25 +196,19 @@ export default function Card4OtherCities() {
   return (
     <section className="card4">
       <header className="card4__header">
-        <div>
-          <h2 className="card4__title">Other Cities</h2>
-
+        <h2 className="card4__title">
+          Other Cities
           {lastUpdated && (
-            <div
-              style={{
-                fontSize: 12,
-                opacity: 0.6,
-                marginTop: 6,
-              }}
-            >
-              Last update:{" "}
+            <span className="card4__meta">
+              {" "}
+              — Last update:{" "}
               {lastUpdated.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
-            </div>
+            </span>
           )}
-        </div>
+        </h2>
 
         <button
           className="card4__seeAll"
