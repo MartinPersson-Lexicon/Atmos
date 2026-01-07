@@ -1,16 +1,22 @@
-# React + Vite
+This is a student web application project. Within the fullstack dotnet course from Lexicon, Malmö.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Meet the team:
+Mojdeh Beyzavi, Alisher Kayumov and Martin Persson
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The project:
+To collaborate and create a frontend web application with free choice of technology.
+ 
+Chosen tech stack:
+Frontend with React.js. CSS and Bootstrap for styling. Api-layer in JavaScript.
+Api calls to external weather service SMHI Open Data API's. At: https://opendata.smhi.se/
+ 
+Results (clockwise from top left):
+Card1: Selected city, latest-hour weather data
+Card2: Selected city, latest-hour expanded weather data
+Card3: Selected city, 10-day weather forecast
+Card4: All cities latest-hour weather data
+ 
+Special thanks to:
+SMHI Open Data for weather data.
+Flaticon.com for some nice icons.
+Freepik.com for some nice background videos.
