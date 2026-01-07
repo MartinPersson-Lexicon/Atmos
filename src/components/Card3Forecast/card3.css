@@ -1,3 +1,11 @@
+@media (max-width: 1920px) and (max-height: 1080px) {
+  .card3 {
+    scrollbar-width: none; /* Firefox */
+  }
+  .card3::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+}
 /* ===== CARD 3 (MATCHED WITH CARD 4) ===== */
 
 /* Main 10 Day Forecast card – I keep this visually consistent with .card4 */
