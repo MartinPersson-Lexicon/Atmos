@@ -1,10 +1,23 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* App.css - final fixed version (mobile responsive + desktop not stretched)
+   Comments are written in simple English (your style)
+*/
+
+/* ===== I reset everything so mobile layout doesn't break ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* padding should not push elements outside */
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* I don't want any horizontal scroll on phone */
+}
+
+/* ===== Theme tokens ===== */
 :root {
   --primary: #3a7bf6;
   --accent: #ff7a59;
@@ -16,8 +29,10 @@
   --bg: #0f1720;
   --surface: #15161a;
   --text: #e6e6ee;
+
   /* rgb form of --text so we can derive translucent variants */
   --text-rgb: 230, 230, 238;
+
   --muted: rgba(var(--text-rgb), 0.45);
   --muted-very: rgba(var(--text-rgb), 0.03);
   --muted-border: rgba(var(--text-rgb), 0.12);
@@ -41,81 +56,103 @@
   --text: #e6e6ee;
 }
 
-/* apply tokens */
+/* ===== Apply tokens ===== */
 body {
   background: var(--bg);
   color: var(--text);
 }
 
-.app-root > .header,
-.app-root .header {
-  background: var(--surface);
+/* ===== IMPORTANT: root must be full width (do NOT limit it) ===== */
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0; /* I removed the big padding because it breaks mobile */
+  text-align: initial; /* I don't want everything forced to center */
 }
 
-.app-footer {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.04));
-}
-
-/* App layout: sidebar left, content to the right */
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-  align-items: stretch;
-}
-
-/* ensure stacking context doesn't block the fixed header */
+/* ===== App wrapper ===== */
 .app-root {
   position: relative;
   z-index: 0;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.content {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  /* reserve space under the fixed header so content doesn't appear beneath it */
-  padding: calc(50px + 1rem) 2rem calc(56px + 1rem);
-}
-
-main {
-  flex: 1 1 auto;
-}
-
-/* Header pinned to top of application */
+/* ===== Header fixed on top ===== */
 .app-root > .header,
 .app-root .header {
   position: fixed;
-  background: var(--surface);
   top: 0;
   left: 0;
   right: 0;
   z-index: 10000; /* keep header above everything */
+  background: var(--surface);
 }
 
-/* Footer styling: keep it visible and pinned to the bottom of the content column */
+/* ===== Footer fixed on bottom ===== */
 .app-footer {
   position: fixed;
-  background: var(--surface);
   bottom: 0;
   left: 0;
   right: 0;
+
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
+
   padding: 12px 16px;
   color: var(--text);
+  background: var(--surface);
   border-top: 1px solid var(--muted-border);
   text-align: center;
   z-index: 70;
 }
 
-/* External link styling used across pages */
+/* ===== Main layout: sidebar + content ===== */
+.app-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  align-items: stretch;
+
+  /* I want the page not too wide on big screens */
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ===== Content column ===== */
+.content {
+  flex: 1 1 auto;
+  min-width: 0; /* VERY IMPORTANT for flex overflow */
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  /* I keep space for the fixed header and footer */
+  padding-top: calc(50px + 1rem);
+  padding-bottom: calc(56px + 1rem);
+
+  /* desktop side padding */
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+main {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0; /* also important */
+}
+
+/* ===== Links and small shared styles ===== */
 .external-link {
   color: var(--primary);
   text-decoration: none;
   border-bottom: 1px solid rgba(58, 123, 246, 0.12);
 }
+
 .external-link:hover {
   text-decoration: underline;
 }
@@ -127,6 +164,7 @@ main {
   transition: filter 300ms;
 }
 
+/* If you still use this somewhere, it's ok */
 .app-container.light {
   background-color: #f5f5f5;
   color: #1a1a2e;
@@ -146,7 +184,7 @@ main {
   color: #888;
 }
 
-/* Home page background video (controlled by Home.jsx) */
+/* ===== Home background video ===== */
 #home-bg-video {
   position: fixed;
   inset: 0;
@@ -156,4 +194,26 @@ main {
   z-index: -1;
   pointer-events: none;
   filter: brightness(0.7) saturate(0.9) contrast(0.95);
+}
+
+/* ===== Mobile fixes ===== */
+@media (max-width: 768px) {
+  .app-layout {
+    padding: 0 12px; /* I reduce side space on phones */
+    max-width: 100%; /* phone should be full width */
+  }
+
+  .content {
+    padding-left: 12px; /* smaller padding so cards fit */
+    padding-right: 12px;
+    padding-top: calc(50px + 12px);
+    padding-bottom: calc(56px + 12px);
+  }
+}
+
+/* ===== Very large screens (optional, keep it nice) ===== */
+@media (min-width: 1400px) {
+  .app-layout {
+    max-width: 1280px; /* still keep the app centered and not too wide */
+  }
 }
